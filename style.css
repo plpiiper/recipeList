@@ -1,0 +1,219 @@
+html {width: 100%; height: 100%;}
+
+body {
+margin: 0; padding: 0;
+font-size: 18px;
+font-family: Noto;
+width: 100%; height: 100%;
+}
+div {position: relative; box-sizing: border-box; font-size: 18px; font-family: Noto; transition: 0.2s;}
+
+@font-face { font-family: "Chakra"; src:url("assets/fonts/ChakraPetch-Light.ttf"); }
+
+@font-face { font-family: "Noto"; src:url("assets/fonts/NotoSansJP-Regular.otf"); }
+
+
+#content {
+width: 100%; height: 100%; margin: 0; padding: 0; box-sizing: border-box; font-family: Noto;
+display: flex; flex-direction: column;
+}
+
+#mDiv {width: 100%; height: 100%; display: flex;}
+#sideBar { max-width: 30vw; width: 30%; height: 100%; padding-left: 2%; box-sizing: border-box;
+background-color: #DB7962;
+}
+
+
+#fSearchBarDiv {width: 85%; height: 45px; margin-top: 15px; outline: none; transition: 0.2s; box-sizing: border-box; display: flex; align-items: center; text-overflow: ellipsis; padding: 10px 15px; margin-bottom: 20px; font-size: 1em; border-radius: 5px 0 0 5px;
+border: 2px solid #F26661;
+background-color: white;
+}
+  #fSearchBarDiv:after {
+width: 20px; height: 100%; position: absolute;  left: 100%; top: -2px; content: ""; background-image: url("assets/images/search.svg"); background-position: center; background-size: contain; background-repeat: no-repeat;
+border-left: 0; border-radius: 0 5px 5px 0;
+border: 2px solid #F26661; background-color: #F26661;
+}
+  #fSearchBarDiv:before {
+content: "Search for recipes"; position: absolute; font-size: 0.6em;
+top: 40px; left: 2px;
+}
+
+
+
+#fSelectCats {font-size: 1em; width: 85%; height: 40px; padding: 5px; box-sizing: border-box; border-radius: 5px; user-select: none; padding-left: 10px; background-color: white; margin-top: 40px;
+border: 2px solid #F26661;
+}
+  #fSelectCats:after {
+height: 30px; width: 20px; content: "▼"; padding-left: 3px; margin: 3px; position: absolute; top: 0; box-sizing: border-box; top: 0px; display: flex; justify-content: center; align-items: center; right: 0; border-radius: 0 10px 10px 0; transition: 0.2s;
+color: #F26661; border-left: 2px solid #F26661;
+}
+  #fSelectCats:before { content: "Select recipe category"; position: absolute; font-size: 0.6em;
+top: 36px; left: 2px;
+}
+
+
+  #fSelectCatsDivs {
+width: 100%; max-height: 0px; overflow-y: auto; position: absolute;
+background-color: white; border-radius: 0 0 10px 10px; top: 39px; left: 0; z-index:3;
+}
+  .fCatsDiv {
+display: flex; height: 25px; margin-bottom: 2px; font-size: 0.9em;}
+    .fCatsDiv:hover {background-color: #F26661;}
+
+  .fCatsCheck {
+width: 20px; height: 20px; box-sizing: border-box; display: flex; justify-content: center; align-items: center;
+}
+  .fCatsFor {
+width: 90%; height: 20px; display: flex; margin-bottom: 5px; margin-left: 10px; box-sizing: border-box; cursor: pointer;
+}
+
+#fSelectCats:hover {border-radius: 5px 5px 0 0;}
+#fSelectCats:hover:after {border-radius: 0 5px 0 0;}
+#fSelectCats:hover #fSelectCatsDivs {max-height: 200px; box-shadow: 2px 2px 3px rgba(242,102,97,0.4);}
+
+
+#fIngListDiv {
+width: 90%; max-height: 90px; min-height: 40px; overflow-y: auto; margin-top: 40px; border-radius: 5px 5px 0 0; display: flex; padding: 5px; flex-wrap: wrap;
+background-color: white; }
+        #fIngListDiv::-webkit-scrollbar {  width: 5px;  }
+        #fIngListDiv::-webkit-scrollbar-track {  background: white;  }
+        #fIngListDiv::-webkit-scrollbar-thumb {  background: #F26661;  }
+        #fIngListDiv::-webkit-scrollbar-thumb:hover {  background: #F26661;  }
+        .fSelectedIngr {
+          display: flex; flex-wrap: wrap; justify-content: center; align-items: center; border-radius: 10px; padding: 2px 5px; font-size: 0.7em; margin: 3px;
+      color: white; background-color: #F26661;
+        }
+        .fSelectedIngr:hover {cursor: pointer; background-color: #F29161;}
+
+#fIngSearchDiv {height: 32px; width: 90%; border-radius: 0 0 5px 5px;
+background-color: #F26661; border-top: 1px solid white;
+}
+    #fIngSearchInp {height: 30px; box-sizing: border-box; width: 90%; outline: none; border: none; background-color: transparent; padding-left: 5%; color: white;}
+        #fIngSearchInp::placeholder {color: rgba(240,240,240); }
+    #fIngList {
+width: 100%; background-color: white; border-radius: 0 0 5px 5px; margin-top: 2px; max-height: 140px; overflow-y: auto; z-index: 3;
+}
+        #fIngList::-webkit-scrollbar {  width: 5px;  }
+        #fIngList::-webkit-scrollbar-track {  background: white;  }
+        #fIngList::-webkit-scrollbar-thumb {  background: #F26661;  }
+        #fIngList::-webkit-scrollbar-thumb:hover {  background: #F26661;  }
+        .ingredientDiv {font-size: 0.8em; border-radius: 5px; width: 100%; cursor: pointer; display: flex; transition: 0.2s; align-items: center;}
+            .ingredientDiv:hover {background-color: #F26661; cursor: pointer;}
+            .ingredientLbl {width: 100%;}
+
+#timerDiv {display: flex;
+}
+  #timerDiv:before {
+content: "Max time for recipe"; position: absolute; font-size: 0.6em;
+top: 25px; left: 2px;
+}
+
+
+
+#mainList {padding: 2.5%; width: 100%; height: 100%; overflow-y: auto;}
+  #listMenu {background-color: black; color: white; width: 100%; height: 40px; border-bottom: 2px solid white; display: flex;}
+      .hoverMenu:hover {cursor:pointer; background-color: purple;}
+  .recipeRow {width: 100%; min-height: 40px; border-bottom: 2px solid white; display: flex;}
+  .recipeRow:hover {background-color: pink; cursor: pointer;}
+      .recipeName {width: 60%; display: flex; align-items: center; padding: 5px; padding-left: 15px; flex-wrap: wrap;}
+      .recipeCat {width: 25%; display: flex; align-items: center; padding: 5px; padding-left: 15px; flex-wrap: wrap;}
+      .recipeTime {width: 15%; display: flex; align-items: center; padding: 5px; padding-left: 15px; flex-wrap: wrap;}
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#toast {
+  min-width: 250px; height: 60px; margin-left: -125px;
+  background-color: #333;  color: #fff;  text-align: center; display: flex; justify-content: center; align-items: center;
+  border-radius: 2px; padding: 16px; position: fixed; z-index: 1;
+  left: 50%; bottom: 30px;
+  transform: translateY(30px);
+transition: 1s; opacity: 0;
+}
+
+#toast.visible { transform: translateY(10px); opacity: 1; }
+
+
+
+.coverDiv {
+position: absolute; height: 100%; width: 100%;
+overflow-y: auto;
+background-color: rgba(0,0,0,0.3);
+display: flex; justify-content: center; align-items: center;
+}
+
+#openedRecipe {
+width: 90%; height: 95%; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; padding: 1vw;
+background-color: #DB7962;
+}
+  #oUpper {
+padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding: 10px;
+background-color: none;
+}
+    #oTitle {font-size: 1.5em; letter-spacing: 0.2em;}
+    .oUSpan {border-radius: 10px; padding: 5px 10px; display: flex; margin-left: 20px;
+background-color: #E89F5D; color: black;
+}
+
+  #oDown { display: flex; padding: 10px; height: 90%;
+background-color: #F26661;
+}
+    .oHeaderDiv {font-size: 1.2em; margin-bottom: 5px; border-bottom: 2px solid white; height: 50px; }
+
+    #oStepsDiv {width: 60%; overflow-y: auto; padding: 10px;}
+      .stepDiv {display: flex; padding: 5px 10px; background-color: white; border-radius: 10px; margin-bottom: 10px;
+      display: flex; align-items: center;
+      }
+      .stepDiv:hover {cursor: pointer; background-color: #FFB066;}
+
+        .stepDivNum {padding-right: 5px; border-right: 2px solid black;}
+        .stepDivText {padding-left: 10px;}
+
+    #oIngredientsDiv {width: 40%; overflow-y: auto; padding: 10px;}
+      .oIngrDiv {margin-bottom: 3px; background-color: white; display: flex;}
+          .ingSizeDiv {display: flex; width: auto; padding-right: 10px; background-color: #F29161; padding: 10px; justify-content: center; align-items: center; width: 30%;}
+            .sizeText {margin-left: 5px;}
+          .ingNameDiv {display: flex; justify-content: left; align-items: center; margin-left: 5px; width: 100%;}
+                .ingName {padding: 5px;}
+            .ingStar { background-color: black; color: white; padding: 5px; width: 40px; font-size: 1em;  display: flex; justify-content: center; align-items: center; }
+              .ingStar:hover {color: red; cursor: pointer;}
+            .ingCommDiv {width: 100%; background-color: white; margin-bottom: 20px; border: 4px solid orange;}
+                .ingCommTxt {padding: 5px; border-left: 4px solid orange; border-right: 4px solid orange;}
+                .ingCommTxt:last-child {border-bottom: 4px solid orange;}
+
+            .ingCommX {width: 100%; padding: 2px 5px; display: flex; align-items: center; background-color: black; color: white;}
+                .ingCommX:hover {cursor: pointer; color: red;}
+
+  .altOIngrDiv {background-color: pink; padding: 7.5px; border: 2px solid black; margin: 10px 0;}
+  .altIngrHeader {padding-left: 5px; font-size: 1.1em; text-decoration: underline; margin-bottom: 5px;}
+  .altName {border-radius: 10px; background-color: pink; padding: 5px 10px; margin-right: 5px;}
+  .altNameOR {margin-right: 5px; font-weight: bold;}
+
+
+
+
+
+.oScrollBar::-webkit-scrollbar {  width: 0.5em; }
+
+.oScrollBar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.oScrollBar::-webkit-scrollbar-thumb {
+  background-color: white; border-radius: 5px;
+  outline: 1px solid orange;
+}
+
+.inputHeader {font-size: 0.9em; font-weight: normal;}
+  .inputCaption {font-size: 0.8em; margin-left: 5%;}
+
+/* MOBILE */
+@media only screen and (max-width: 850px) {
+    #mDiv {flex-direction: column;}
+    #sideBar {width: 100%; max-width: 100vw;  max-height: 45vh; overflow-y: auto;}
+    #mainList {width: 100%; max-width: 100vw; max-height: 55vh;}
+    .recipeName {width: 50%;}
+    .recipeRow {border-bottom: 2px solid grey;}
+    #oDown {flex-direction: column;}
+        #oStepsDiv {width: 100%; border-bottom: 4px solid black;}
+        #oIngredientsDiv {width: 100%;}
+        #oTitle {letter-spacing: 0.1em; font-size: 1.4em;}
+   }
