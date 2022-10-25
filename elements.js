@@ -87,6 +87,7 @@ startFilters(recipes)
 
     var tx = document.createElement("div"); tx.id = "timerText"; tx.innerText = Math.floor(high/60) + "H " + high%60 + "M"; td.appendChild(tx);
 
+    var arr = document.createElement("div"); arr.id = "sideBarTHide"; p.appendChild(arr); arr.innerText = ">"; arr.onmouseover = function(){toggleSideBar();}
 }
 
 
@@ -124,7 +125,6 @@ div.onclick = function(event) {openRecipe(event)}
 parent.appendChild(div)
 }
 }
-
 
 
 
@@ -232,7 +232,6 @@ var s = sa[i];
       var stxt = document.createElement("div"); stxt.innerHTML = sa[i]; sd.appendChild(stxt); stxt.className = "stepDivText"
 }}
 
-
 function openIngredients(arr,parent){
 var h = document.createElement("div"); h.innerText = "Ingredients"; h.className = "oHeaderDiv";
   if (Array.isArray(arr) && ["cat","and","alt"].includes(arr[0])){
@@ -304,7 +303,6 @@ var id = document.createElement("div"); id.className = "oIngrDiv"; parent.append
 
 
 
-
 function toggleComments(div,obj){
 var li = Array.from(div.parentNode.childNodes);
 
@@ -334,7 +332,6 @@ div.onclick = function(event){removeAround(event)}
 
 return div
 }
-
 function removeAround(event){
   var r = event.composedPath()[0]; var cover = r
 while (cover.className !== "coverDiv") {cover = cover.parentNode}
@@ -347,14 +344,68 @@ var w = r.x; var h = r.y
 
 if ((cH < h || cH > totalH) || (cW < w || cW > totalW)) {
 cover.remove()
-}
-
-
-}
+}}
 
 
 function toggleSideBar(){
     var sb = document.getElementById("sideBar");
-if (sb.style.display == "flex") {sb.style.display = "none"}
-else {sb.style.display = "flex"}
+    var w = window.innerWidth; var affect = "width"
+    if (w < 850) {var affect = "height"} //affect mobile
+if (affect == "width" && sb["style"]["height"] == "0px") {sb["style"]["height"] = "100%";}
+if (affect == "height" && sb["style"]["width"] == "0px") {sb["style"]["width"] = "100%";}
+
+if (sb.style[affect] == "0px") {
+    sb.style[affect] = ""; sb.style.overflow = ""; sb.removeEventListener("click",function(){toggleSideBar()});
+}
+else {
+    sb.style[affect] = "0px"; sb.style.overflow = "hidden"; sb.addEventListener("click",function(){toggleSideBar()})
+}
+}
+
+
+function recipeAdderDiv(){
+var div = document.createElement("div"); div.id = "recipeAdderDiv";
+    var sb = document.createElement("div"); sb.id = "raSideBar"; div.appendChild(sb);
+    var m = document.createElement("div"); m.id = "raContent"; div.appendChild(m)
+coverDiv(document.getElementById("content")).appendChild(div)
+    changeRAops("Help")
+}
+
+function changeRAops(option){
+var sb = document.getElementById("raSideBar"); var m = document.getElementById("raContent");
+
+// sb parts
+    var sbl = sb.childNodes.length;
+    for (var i=0; i<sbl; i++) {sb.childNodes[0].remove()}
+    for (var i=0; i<raOptions.length;i++){
+        let rao = raOptions[i]
+        var op = document.createElement("div"); op.innerText = rao["name"]; sb.appendChild(op); op.className = "raSBOpDiv"; op.onclick = function(){ changeRAops(rao.name) }
+        if (op.innerText == option) {op.style.textDecoration = "underline"}
+    }
+
+// m parts
+var ml = m.childNodes.length;
+for (var i=0; i<ml; i++) {m.childNodes[0].remove()}
+var look = raOptions.find(x => x.name == option)
+    for (var i=0; i<look.texts.length; i++) {changeRAContent(look.texts[i],m)}
+}
+
+function changeRAContent(obj,parent){
+    console.log(obj)
+var type = obj[0];
+var div = document.createElement(type);
+    if (obj[1][0] == ".") {div.className = obj[1].substring(1)}
+    if (obj[1][0] == "#") {div.id = obj[1].substring(1)}
+if (["ul","select","datalist","input"].includes(obj[1])) {
+    // special stuff (<ul> for example
+}
+else{ // normal stuff
+    if (typeof obj.at(-1) == "string"){
+        div.innerHTML = obj.at(-1); parent.appendChild(div)
+    }
+    else {
+
+    }
+
+}
 }

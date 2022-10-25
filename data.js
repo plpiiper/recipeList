@@ -1,4 +1,22 @@
-var ing_list = {}
+var raOptions = [
+    {name: "Help", texts: [
+        ["h2",".ClassName","Help Overview"],
+        ["p",".ClassName","This section will tell you how to use the Recipe Editor. Important to note: When you exit this screen without saving a recipe, your work will NOT be saved (for now)."],
+        ["p","The Recipe Editor allows you to create new recipes and edit already made recipes. To the side of this editor is a list of menu options that you can click to go to different sections (including this one)."],
+        ["h3",".ClassName","Overview"],
+        ["p","\"Overview\" contains the easier options to change. The recipe name, time, and category can be changed here. You will also see a preview of the current ingredients and steps of the recipe here as well. You will be editing the ingredients and steps in a different section. you will be saving the recipe here, however the minimum requirements to save it is: Category, Name, 1 Ingredient, and 1 Step."],
+        ["p",".ClassName","Here, just simply click into the input fields and type in your changes. The Category input will suggest pre-existing categories, but you can create new categories."],
+        ["p","The default time type is in \"Minutes\" To the left of this will be an input which relates to the current time type. (So the default method is having that number correspond to the number of minutes it takes to do the recipe. You can change the time type to \"Hours\" and change it so that the input relates to the number of hours. Another input to the right will show up. This will relates to the number of minutes and is only visible when \"Hours\" is selected."]
+        ]},
+    {name: "Overview", texts: [
+        ["div","#recipeName","Recipe Name"],
+        ["div","#raCatDiv","Category"]
+        ]
+        }
+
+]
+
+
 
 var recipes = [
 { name: "Beef Stroganoff", cat: "Red Meat", time: [1,"Hour"],
@@ -623,6 +641,25 @@ ingredients: [
 ],
 steps: [
 "Blend onions into crushed crackers.","Add 2 beaten eggs and all other ingredients.","Either put into turkey or bake in dish for 20 minutes."
+]
+},
+{name: "Baked Pork Chops", cat: "Red Meat", time: [20,"Minutes"],
+ingredients: [
+[4,"Pork Chops","(Boneless)","-At least 1-inch thick-"], [1,"Tablespoon","Olive Oil"],["1½","Tablespoons","Brown Sugar"], [2,"Teaspoons","Paprika","(Sweet or Smoked)"],[1,"Teaspoon","Onion Powder"], [1,"Teaspoon","Thyme","(Dried)"], [1,"Teaspoon","Salt"],["1/2","Teaspoon","Black Pepper"]
+],
+steps: [
+"Preheat oven to 425° F. Line a rimmed baking sheet with parchment paper. (You can also bake pork chops in a baking dish, without parchment.)",
+"Pat pork chops dry with paper towels. Rub pork chops with the olive oil and place them on the prepared baking sheet.",
+"Combine the brown sugar, paprika, onion powder, dried thyme, salt and pepper in a small bowl. Stir to mix well.",
+"Rub the spice mixture over all sides of the pork chops.",
+"Bake pork chops in the preheated oven for 15 to 20 minutes for 1-inch thick boneless pork chops. The pork chops are done when the internal temperature measures 145° F on an instant read thermometer. (Thinner pork chops will cook faster, bone-in pork chops will take longer to cook. See notes.) Be careful not to overcook the pork chops or they may dry out.",
+"Let the pork chops rest for 5 minutes and then serve."
+]
+},
+{name: "Chicken and Barley Stew", cat: "Stew", time: [1,"Hour"],
+ingredients: [ ["1½","Pounds","Chicken Thighs","(Boneless, Skinless)"], [1,"Tablespoon","Seasoning","(Italian, Dried)"],[1,"Small","Yellow Onion","(Diced)"],[3,"Large","Carrots","(Peeled and Diced)"],[3,"Celery Ribs","(Diced)"],[2,"Cloves","Garlic","(Minced)"],[3,"Small","Potatoes","(Diced)"],[8,"Cups","Chicken Broth"],["¼","Cup",["White Wine","White Wine Vinegar"]],[1,"Cup","Barley","(Raw)"],[1,"Teaspoon","Thyme","(Fresh, Minced)"],[1,"Teaspoon","Rosemary","(Fresh, Minced)"],[1,"Teaspoon","Sage","(Fresh, Minced)"],["Parsley","(Fresh, Roughly chopped)","-For garnish-"],["Salt","Black Pepper","(Ground)"]
+],
+steps: ["Pat chicken thighs dry with a paper towel. Season both sides of each thigh liberally with salt, pepper, and Italian seasoning.","Heat 1 tablespoon olive oil in a dutch oven or large stew pot over medium high heat. Add the chicken and cover the pot with a lid. Cook for 5-7 minutes until golden brown on bottom, remove lid and flip chicken thighs over. Cook for another 5-7 minutes, covered with lid, again until golden brown and cooked through (temperature reaches 165˚F). Remove to a bowl, shred with two forks, and set aside.","Drain excess fat out of pan, and when back on heat, pour half of the wine into the pan. Deglaze the pan by scraping the browned bits off the bottom of the pan (keeping it in the pan!).","If necessary, add another tablespoon of olive oil to the pan. Saute onion, carrot and celery in pan over medium high heat and until softened, about 7 minutes. Add garlic and sauté for 30 seconds to 1 minute, until fragrant.","Deglaze the pan again with the rest of the white wine (or white wine vinegar), scraping up browned bits on the bottom of the pan.","Add the chicken broth, potatoes, shredded chicken, barley, chicken broth, thyme, rosemary, and sage to the pot. Stir to combine and bring to a boil. Reduce to a simmer, cover with a lid, and cook for about 30 minutes, until chicken and potatoes are tender. Garnish with fresh parsley if desired."
 ]
 }
 
