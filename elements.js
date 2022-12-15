@@ -89,7 +89,7 @@ startFilters(recipes)
 
     var arr = document.createElement("div"); arr.id = "sideBarTHide"; p.appendChild(arr); arr.innerText = ">"; arr.onclick = function(){toggleSideBar(); console.log("arr")}
 
-var crBtn = document.createElement("div"); crBtn.innerText = "+ Add Recipe"; p.appendChild(crBtn); crBtn.onclick = recipeAdderDiv; crBtn.id = "addRecipeBtn";
+var crBtn = document.createElement("div"); crBtn.innerText = "+ Add Recipe"; p.appendChild(crBtn); crBtn.onclick = function(){recipeAdderDiv()}; crBtn.id = "addRecipeBtn";
 }
 
 
@@ -480,8 +480,6 @@ r.time = [mins,"Minutes"]
 // TIME //
 }}
 
-// if content is ingredients
-// if content is steps
 var str = JSON.stringify(r); b.dataset.data = str; turnRaToRecipe();
 }
 
@@ -506,16 +504,18 @@ else { document.getElementById("raTimeInput1").value = d.time[0] }
 // Ingredient List & Step List do this on its own function
     let il = document.getElementById("raIIList")
     let sl = document.getElementById("raISList");
+        if ("ingredients" in d){
         let id = getIngredients(d);
         for (var i=0; i<id.length; i++){
             let idv = document.createElement("div"); idv.className = "raItemsI"; idv.innerText = id[i]; il.appendChild(idv)
-        }
+        }}
+        if ("steps" in d){
         for (var i=0; i<d.steps.length;i++){
             let sdv = document.createElement("div"); sdv.className = "raItemsS";
                 let s1 = document.createElement("div"); s1.innerText = i+1; sdv.appendChild(s1)
                 let s2 = document.createElement("div"); s2.innerText = d.steps[i]; sdv.appendChild(s2);
             sl.appendChild(sdv)
-        }
+        }}
 }
 if (type == "Ingredients"){
     let m = document.getElementById("raIngredientListC");
@@ -574,7 +574,6 @@ var d = document.getElementById("recipeAdderDiv").dataset.data
 if (d !== undefined && ("ingredients" in JSON.parse(d))) {
     var il = JSON.parse(d);
         var lil = getIngredients(il)
-        console.log(lil)
     } // put in ingredients
 else {
     let er = document.createElement("div"); er.innerText = "Add Ingredients"; er.className = "raItemsBtn"; bot.appendChild(er); er.onclick = function(){

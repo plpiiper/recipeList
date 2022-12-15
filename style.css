@@ -246,7 +246,7 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
         .raIC:has(.raItemsBtn) { display: flex; justify-content: center; align-items: center; flex-direction: column; height: 80%;
         }
         .raItemsBtn {
-            background-color: orangered; padding: 0.5em 1em; border-radius: 1em; font-size: 1.25em;
+            background-color: rgba(var(--c2A)); padding: 0.5em 1em; border-radius: 1em; font-size: 1.25em;
         }
             .raItemsBtn:hover {cursor: pointer; border-radius: 0.2em; background-color: transparent; text-decoration: underline; }
 
