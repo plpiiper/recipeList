@@ -3,7 +3,7 @@ var body = document.getElementById("content");
 
 var div = document.createElement("div"); div.id = "mDiv"; body.appendChild(div)
 
-  var sb = document.createElement("div"); sb.id = "sideBar"; div.appendChild(sb);  createSideBar(sb);
+  var sb = document.createElement("div"); sb.id = "sideBar"; div.appendChild(sb);  sb.className = "openSB"; createSideBar(sb);
 
   var li = document.createElement("div"); li.id = "mainList";
   div.appendChild(li);
@@ -87,7 +87,9 @@ startFilters(recipes)
 
     var tx = document.createElement("div"); tx.id = "timerText"; tx.innerText = Math.floor(high/60) + "H " + high%60 + "M"; td.appendChild(tx);
 
-    var arr = document.createElement("div"); arr.id = "sideBarTHide"; p.appendChild(arr); arr.innerText = ">"; arr.onmouseover = function(){toggleSideBar();}
+    var arr = document.createElement("div"); arr.id = "sideBarTHide"; p.appendChild(arr); arr.innerText = ">"; arr.onclick = function(){toggleSideBar(); console.log("arr")}
+
+var crBtn = document.createElement("div"); crBtn.innerText = "+ Add Recipe"; p.appendChild(crBtn); crBtn.onclick = recipeAdderDiv; crBtn.id = "addRecipeBtn";
 }
 
 
@@ -209,6 +211,8 @@ var div = document.createElement("div"); div.id = "openedRecipe";
         var n = document.createElement("span"); n.id = "oTitle"; n.innerText = r["name"]; up.appendChild(n)
         var cat = document.createElement("span"); cat.className = "oUSpan"; cat.innerText = r["cat"];  up.appendChild(cat)
         var time = document.createElement("span"); time.className = "oUSpan"; up.appendChild(time)
+        var edit = document.createElement("span"); edit.className = "oUEdit SVGD"; up.appendChild(edit); edit.onclick = function(){recipeAdderDiv(JSON.stringify(r))};
+            edit.style.backgroundImage = "url(\"assets/images/edit.svg\")";
 // TIME //
 time.innerText = getTime(r["time"])
 
@@ -328,46 +332,45 @@ else {return}
 
 function coverDiv(parent){
 var div = document.createElement("div"); div.className = "coverDiv"; parent.appendChild(div)
-div.onclick = function(event){removeAround(event)}
-
+div.onclick = function(event){removeAround(event);}
 return div
 }
 function removeAround(event){
   var r = event.composedPath()[0]; var cover = r
-while (cover.className !== "coverDiv") {cover = cover.parentNode}
+while ((cover.parentNode !== null && cover.parentNode !== undefined) && cover.className !== "coverDiv") {cover = cover.parentNode}
+if (cover.parentNode == null || cover.parentNode == undefined) {return}
 r = cover.childNodes[0]
 
-r = r.getBoundingClientRect()
+var rc = r.getBoundingClientRect()
 var cW = event.clientX; var cH = event.clientY
-var totalW = r.width + r.x; var totalH = r.height + r.y
-var w = r.x; var h = r.y
+var w = rc.x; var h = rc.y;
 
+var totalW = rc.width + w; var totalH = rc.height + h;
 if ((cH < h || cH > totalH) || (cW < w || cW > totalW)) {
+    if (r.id == "recipeAdderDiv"){ createRecipes(recipes) }
 cover.remove()
 }}
 
 
 function toggleSideBar(){
     var sb = document.getElementById("sideBar");
-    var w = window.innerWidth; var affect = "width"
-    if (w < 850) {var affect = "height"} //affect mobile
-if (affect == "width" && sb["style"]["height"] == "0px") {sb["style"]["height"] = "100%";}
-if (affect == "height" && sb["style"]["width"] == "0px") {sb["style"]["width"] = "100%";}
-
-if (sb.style[affect] == "0px") {
-    sb.style[affect] = ""; sb.style.overflow = ""; sb.removeEventListener("click",function(){toggleSideBar()});
-}
-else {
-    sb.style[affect] = "0px"; sb.style.overflow = "hidden"; sb.addEventListener("click",function(){toggleSideBar()})
-}
+if (sb.className == "openSB") {sb.className = "closeSB"; sb.addEventListener("mouseover",toggleSideBar) }
+else {sb.className = "openSB"; sb.removeEventListener("mouseover",toggleSideBar)}
 }
 
-
-function recipeAdderDiv(){
+function recipeAdderDiv(x){
 var div = document.createElement("div"); div.id = "recipeAdderDiv";
+    if (x !== undefined){div.dataset.data = x; div.dataset.og = x;}
+
     var sb = document.createElement("div"); sb.id = "raSideBar"; div.appendChild(sb);
     var m = document.createElement("div"); m.id = "raContent"; div.appendChild(m)
-coverDiv(document.getElementById("content")).appendChild(div)
+if (x !== undefined) {
+    if (document.getElementById("openedRecipe") !== null){
+    coverDiv(document.getElementById("openedRecipe").parentNode).appendChild(div)
+    }
+    else {coverDiv(document.getElementById("content")).appendChild(div)}
+    }
+else {coverDiv(document.getElementById("content")).appendChild(div)}
     changeRAops("Help")
 }
 
@@ -380,7 +383,7 @@ var sb = document.getElementById("raSideBar"); var m = document.getElementById("
     for (var i=0; i<raOptions.length;i++){
         let rao = raOptions[i]
         var op = document.createElement("div"); op.innerText = rao["name"]; sb.appendChild(op); op.className = "raSBOpDiv"; op.onclick = function(){ changeRAops(rao.name) }
-        if (op.innerText == option) {op.style.textDecoration = "underline"}
+        if (op.innerText == option) {op.style.textDecoration = "underline"; op.id = "selectedRAOp"}
     }
 
 // m parts
@@ -388,24 +391,377 @@ var ml = m.childNodes.length;
 for (var i=0; i<ml; i++) {m.childNodes[0].remove()}
 var look = raOptions.find(x => x.name == option)
     for (var i=0; i<look.texts.length; i++) {changeRAContent(look.texts[i],m)}
+if ("functions" in look) {
+    var set;
+    for (var f=0; f<look["functions"].length; f++) {
+    var func = look["functions"][f]
+    if (func[0] == "onload") { set = func[1]  }
+    else {
+     document.getElementById("raContent")[func[0]] = func[1] }}
+    if (set !== undefined) {set()}
+     }
+    loadDataset()
 }
 
 function changeRAContent(obj,parent){
-    console.log(obj)
-var type = obj[0];
-var div = document.createElement(type);
-    if (obj[1][0] == ".") {div.className = obj[1].substring(1)}
-    if (obj[1][0] == "#") {div.id = obj[1].substring(1)}
-if (["ul","select","datalist","input"].includes(obj[1])) {
+var type = obj["type"];
+var div = document.createElement(type); parent.appendChild(div)
+    if ("className" in obj) {div.className = obj["className"]}
+    if ("id" in obj) {div.id = obj["id"]}
+    if ("dataset" in obj){
+        for (var i=0; i<obj["dataset"].length; i++){
+        div["dataset"][obj["dataset"][i][0]] = obj["dataset"][i][1]
+        }}
+    if ("style" in obj) {div["style"] = obj["style"]}
+    if ("onfunction" in obj) {
+        let fList = obj["onfunction"]
+        for (var f=0; f<fList.length; f++) {
+        if (fList[f][0] !== "onload") {div[fList[f][0]] = fList[f][1] }
+
+
+    if (fList.findIndex(x => x[0] == "onload") !== -1){
+        fList.find(x => x[0] == "onload")[1]()}
+        }
+    }
+if (["ul","ol","select","datalist","input"].includes(type)) {
     // special stuff (<ul> for example
+    if (type == "input"){
+        for (var i=0; i<obj["ops"].length; i++){
+        div.setAttribute(obj["ops"][i][0],obj["ops"][i][1]) }}
+    else {
+        var chT = "option"
+        if (["ul","ol"].includes(type)){ chT = "li"}
+        for (var i=0; i<obj["ops"].length; i++){
+            var sl = document.createElement(chT); sl.innerText = obj["ops"][i]; sl.value = obj["ops"][i];
+                if (typeof obj["ops"][i] !== "string"){
+                    for (key in obj["ops"][i]) { sl.setAttribute(key,obj["ops"][i][key]) }}
+        div.appendChild(sl)
+        }
+    }
+
+}
+else if ("children" in obj) {
+    for (var i=0; i<obj["children"].length; i++){
+        var sd = changeRAContent(obj["children"][i],div)
+    }
 }
 else{ // normal stuff
-    if (typeof obj.at(-1) == "string"){
-        div.innerHTML = obj.at(-1); parent.appendChild(div)
+    if ("tx" in obj){
+        div.innerHTML = obj["tx"];
     }
+}
+
+if ("function" in obj){
+    obj["function"]
+}
+// function that activate after element is appended
+
+return div
+}
+
+
+
+function changeDataset(){
+var b = document.getElementById("recipeAdderDiv")
+if (b.dataset.data !== undefined){ var r = JSON.parse(b.dataset.data)  }
+else { var r = {} }
+
+// When in overview
+if (document.getElementById("selectedRAOp").innerText == "Overview"){
+r.name = document.getElementById("raRecipeName").childNodes[1].value; r.cat = document.getElementById("raCatOp").value;
+// TIME //
+    if (document.getElementById("raTimeInput1").value !== ""){
+var mins = 0; var type = document.getElementById("raTimeSelect").value;
+var v1 = JSON.parse(document.getElementById("raTimeInput1").value);
+var v2 = document.getElementById("raTimeInput2").value;
+        if (type == "Minutes") { mins += v1 }
+        else { mins += v1*60; if (v2 !== "") {mins += JSON.parse(v2)}  }
+r.time = [mins,"Minutes"]
+// TIME //
+}}
+
+// if content is ingredients
+// if content is steps
+var str = JSON.stringify(r); b.dataset.data = str; turnRaToRecipe();
+}
+
+function loadDataset(){
+var b = document.getElementById("recipeAdderDiv").dataset.data
+var type = document.getElementById("selectedRAOp").innerText
+if (b !== undefined){
+let d = JSON.parse(b)
+if (type == "Overview"){
+// Recipe Name
+document.getElementById("raRecipeName").childNodes[1].value = d.name
+// Category
+document.getElementById("raCatOp").value = d.cat
+// Time
+let tm = makeMinutes(d.time)
+if (tm >= 60){
+   document.getElementById("raTimeInput1").value = Math.floor(tm/60);
+   document.getElementById("raTimeInput2").value = tm%60;
+        document.getElementById("raTimeSelect").value = "Hours"; document.getElementById("raTimeInput2").style.display = "block"
+     }
+else { document.getElementById("raTimeInput1").value = d.time[0] }
+// Ingredient List & Step List do this on its own function
+    let il = document.getElementById("raIIList")
+    let sl = document.getElementById("raISList");
+        let id = getIngredients(d);
+        for (var i=0; i<id.length; i++){
+            let idv = document.createElement("div"); idv.className = "raItemsI"; idv.innerText = id[i]; il.appendChild(idv)
+        }
+        for (var i=0; i<d.steps.length;i++){
+            let sdv = document.createElement("div"); sdv.className = "raItemsS";
+                let s1 = document.createElement("div"); s1.innerText = i+1; sdv.appendChild(s1)
+                let s2 = document.createElement("div"); s2.innerText = d.steps[i]; sdv.appendChild(s2);
+            sl.appendChild(sdv)
+        }
+}
+if (type == "Ingredients"){
+    let m = document.getElementById("raIngredientListC");
+        m.classList.add("oScrollBar"); m.classList.add("dropZone");
+            m.ondrop = raIDragDrop; m.ondragenter = raIDragEnter; m.ondragleave = raIDragLeave; m.ondragover = adr;
+
+    let s = document.getElementById("raIngredientFileList");
+        while (m.childNodes.length > 1) { m.childNodes[0].remove() }
+        while (s.childNodes.length > 0) {s.childNodes[0].remove()}
+    if ("ingredients" in d){
+        console.log(d.ingredients)
+        while (m.childNodes.length > 0) {m.childNodes[0].remove()}
+        for (var i=0; i<d.ingredients.length;i++){
+            let norm = d.ingredients[i]
+            raCID(norm,m)
+        } // loop
+    }
+}
+if (type == "Steps"){
+    let sl = d.steps;
+    for (var i=0; i<sl.length; i++){ raCStep(sl[i]) }
+}}
+
+//
+}
+
+function raCID(obj,parent){
+    let norm = obj;
+    if (["cat","alt","and"].includes(norm[0])){ // if CAT
+        let cd = document.createElement("div"); cd.classList.add("raCategory"); cd.classList.add("rac" + norm[0][0].toUpperCase() + norm[0].substring(1));
+            cd.classList.add("dropZone")
+        if (norm[0] == "cat") { cd.innerText = "Cat: " + norm[1]}
+        else {cd.innerText = norm[0][0].toUpperCase() + norm[0].substring(1)}
+        cd.onclick = function(){ raOpenCat(norm,cd) }; cd.dataset.data = JSON.stringify(norm);
+        parent.appendChild(cd); cd.draggable = true; cd.ondragstart = raIDragStart;
+    }
+    else { // Else, ingredients
+        let id = document.createElement("div"); id.className = "raIngredient"; parent.appendChild(id);
+        if (typeof norm == "string") {id.innerText = norm}
+        else { let ingr = iIngrF(norm); id.innerText = ingr.ingredient;}
+
+        id.dataset.data = JSON.stringify(norm);
+        id.onclick = function(){ raCIngredientDiv(iIngrF(norm)) }
+        id.draggable = true; id.ondragstart = raIDragStart;
+    } // if an object INGREDIENT
+}
+
+
+function raCreateIngredients(){
+var b = document.getElementById("raItemsIngredientDiv")
+console.log(b)
+    var top = document.createElement("div"); top.id = "raIIH"; top.className = "raIH"; b.appendChild(top); top.innerText = "Ingredients";
+    var bot = document.createElement("div"); bot.id = "raIIList"; b.appendChild(bot); bot.className = "raIC";
+
+var d = document.getElementById("recipeAdderDiv").dataset.data
+if (d !== undefined && ("ingredients" in JSON.parse(d))) {
+    var il = JSON.parse(d);
+        var lil = getIngredients(il)
+        console.log(lil)
+    } // put in ingredients
+else {
+    let er = document.createElement("div"); er.innerText = "Add Ingredients"; er.className = "raItemsBtn"; bot.appendChild(er); er.onclick = function(){
+        changeRAops("Ingredients")
+    }
+}
+
+}
+function raCreateSteps(){
+    var b = document.getElementById("raItemsStepsDiv")
+    var top = document.createElement("div"); top.id = "raISH"; top.className = "raIH"; b.appendChild(top); top.innerText = "Steps";
+    var bot = document.createElement("div"); bot.id = "raISList"; b.appendChild(bot); bot.className = "raIC";
+
+    var d = document.getElementById("recipeAdderDiv").dataset.data
+    if (d !== undefined && ("steps" in JSON.parse(d))) {
+        var iss = JSON.parse(d).steps;
+    } // put in ingredients
     else {
+        let er = document.createElement("div"); er.innerText = "Add Steps"; er.className = "raItemsBtn"; bot.appendChild(er); er.onclick = function(){
+            changeRAops("Steps")
+        }
+    }
+}
+
+/* onclick stuff fc */
+    function raIOpenC(){
+    let p = document.getElementById("raIMCO");
+if (p !== null){
+    if (p.style.maxHeight == "0px") { p.style.maxHeight = "1000px"; p.classList.remove("noOverflow") }
+    else {p.style.maxHeight = "0px"; p.classList.add("noOverflow");}
+    let pb = document.getElementById("raIMDCD").childNodes[1]
+    if (pb.style.backgroundImage.includes("comment.")){
+        pb.style.backgroundImage = pb.style.backgroundImage.replace("comment.","commentRem."); document.getElementById("raIMDCD").childNodes[0].innerText = "Hide"
+    }
+    else {pb.style.backgroundImage = pb.style.backgroundImage.replace("commentRem","comment"); document.getElementById("raIMDCD").childNodes[0].innerText = "Show";}
+    }}
+
+
+/* end fc */
+
+
+function raCIngredientDiv(obj){
+    var bod = coverDiv(document.getElementById("recipeAdderDiv").parentNode)
+        var div = document.createElement("div"); div.id = "raCID"; bod.appendChild(div);
+            var tl = document.createElement("div"); tl.innerText = "Create Ingredient"; div.appendChild(tl); tl.style = "font-size: 1.3em; font-weight: bold; font-family: Chakra;"
+            var sub = document.createElement("div"); sub.innerText = "Fill in the input right below for every ingredient, and then make sure it shows exactly how you want it to in the example container on the bottom. Then, finalize it by adding the ingredient with the \Create Ingredient\" button. Toggle \"Comments\" by hovering over the \"Show\" / \"Hide\" button."; sub.style.fontSize = "0.9em"; div.appendChild(sub); sub.style.marginBottom = "40px"
+            var main = document.createElement("div"); main.id = "raIMD"; div.appendChild(main);
+                var num = document.createElement("input"); num.placeholder = "#"; main.appendChild(num); num.className = "raCIInput"; num.id = "raciiN";
+                var portion = document.createElement("input"); portion.placeholder = "Size"; main.appendChild(portion); portion.className = "raCIInput"; portion.id = "raciiP";
+                var ingr = document.createElement("input"); ingr.placeholder = "Ingredient"; main.appendChild(ingr); ingr.className = "raCIInput"; ingr.id = "raciiI";
+                var cd = document.createElement("button"); main.appendChild(cd); cd.id = "raIMDCD";
+                cd.onclick = raIOpenC
+                    var tcd = document.createElement("div"); tcd.innerText = "Show"; cd.appendChild(tcd);
+                    var bcd = document.createElement("div"); cd.appendChild(bcd); bcd.style.backgroundImage = "url(assets/images/comment.svg)"; bcd.className = "SVGD";
+        // comment open/close
+        var ocd = document.createElement("div"); ocd.id = "raIMCO"; div.appendChild(ocd); ocd.style.maxHeight = "0px"; ocd.classList.add("noOverflow")
+            var sc1 = document.createElement("div"); sc1.innerText = "Comment 1"; ocd.appendChild(sc1);
+            var in1 = document.createElement("input"); in1.className = "raCommentI"; ocd.appendChild(in1)
+            var sc2 = document.createElement("div"); sc2.innerText = "Comment 2"; ocd.appendChild(sc2);
+            var in2 = document.createElement("input"); in2.className = "raCommentI"; ocd.appendChild(in2); in2.placeholder = "Will only activate when \"Comment 1\" is filled."
+            var tcc = document.createElement("div"); tcc.innerText = "Add comments, styles, etc about this ingredient here. Comments will only show when this window is open.";  ocd.appendChild(tcc); tcc.style.fontSize = "0.8em"
+    function oku(){ raPreviewIngredient(writeIngredient(),"raCIXX")}
+
+    num.onkeyup = oku; portion.onkeyup = oku; ingr.onkeyup = oku; in1.onkeyup = oku; in2.onkeyup = oku
+var lower = document.createElement("div"); lower.id = "racl"; div.appendChild(lower);
+    var x = document.createElement("div"); x.id = "raCIX"; lower.appendChild(x);
+        var tx = document.createElement("div"); tx.innerText = "Preview: "; x.appendChild(tx)
+        var xx = document.createElement("div"); xx.id = "raCIXX"; x.appendChild(xx);
+
+    var abtn = document.createElement("button"); abtn.id = "raCIB"; abtn.innerText = "Create Ingredient"; lower.appendChild(abtn);
+    abtn.onclick = function(){raCIBtnOC("add") }
+
+
+    if (obj !== undefined){
+    let ro = iIngrF(obj); console.log(ro)
+        if ("ingredient" in ro) { ingr.value = ro["ingredient"]}
+        if ("amount" in ro) {num.value = ro["amount"]}
+        if ("size" in ro) {portion.value = ro["size"]}
+        if ("comment" in ro){
+            let c = ro["comment"]; raIOpenC()
+            in1.value = c[0].substring(1,c[0].length-1)
+            if (c.length == 2){ in2.value = c[1].substring(1,c[1].length-1)
+                 }
+        }
+        abtn.innerText = "Change Ingredient"; abtn.onclick = function(){raCIBtnOC(obj)}
+        raPreviewIngredient(writeIngredient(),"raCIXX")
+    } // if changing ingr
+}
+
+function raPreviewIngredient(obj,parent){
+if (typeof parent == "string") { var p = document.getElementById(parent) } else {var p = parent}
+while (p !== null && p.childNodes.length > 0) {p.childNodes[0].remove()}
+    createIngredientDiv(obj,p)
+}
+
+function raAddIngredient(obj,parent){
+var b = document.getElementById("recipeAdderDiv");
+    var bd = b.dataset.data
+    var objA = recallIngrToArr(obj)
+    if (bd == undefined) {
+        var l = {ingredients: [objA]}
+        b.dataset.data = JSON.stringify(l) }
+    else {
+        var l = JSON.parse(bd);
+        if ("ingredients" in JSON.parse(bd)){ l["ingredients"].push(objA); }
+        else {l["ingredients"] = [objA]}
+        b.dataset.data = JSON.stringify(l);
+    }
+
+loadDataset()
+var close = document.getElementById("raCID").parentNode; close.remove()
+    }
+
+
+
+function raCCatDiv(){
+    var bod = coverDiv(document.getElementById("recipeAdderDiv").parentNode)
+    var div = document.createElement("div"); div.id = "raCCD"; bod.appendChild(div)
+    let ops = [
+        {name: "AND", text: "Creates a list that groups ingredients together (like ingredients for a salad separate from the whole recipe)"},
+        {name: "ALT", text: "Creates a list that groups ingredients that can be alternated with each other (AKA, interchangable)"},
+        {name: "CAT", text: "Creates a list that groups ingredients into a specific category of a recipe (like a sauce separate from the whole recipe)"}
+    ]
+    let b = document.createElement("div"); b.innerText = "Create Category"; div.appendChild(b); b.className = "raCCDHeader"
+    let con = document.createElement("div"); div.appendChild(con); con.className = "raCCDContainer";
+    let tx = document.createElement("div"); div.appendChild(tx); tx.className = "raCCDText"
+    for (var i=0; i<ops.length;i++){
+        let o = ops[i];
+        let d = document.createElement("div"); d.innerText = o.name; d.className = "raCCDOp"; con.appendChild(d); d.dataset.name = o.name.toLowerCase(); d.dataset.text = o.text;
+        d.onmouseenter = function(){ tx.innerText = o.text; d.classList.add("raCCSelected")
+        }
+        d.onmouseleave = function(){ d.classList.remove("raCCSelected")}
+        d.onclick = function(){
+            let m = document.getElementById("recipeAdderDiv");
+                let mc = m.dataset.data
+                var val = [d.dataset.name]; if (d.dataset.name == "cat") {val.push("New Cat")}
+                if (mc == undefined){ m.dataset.data = {val} }
+                else if ("ingredients" in JSON.parse(mc)) {
+                    mc = JSON.parse(mc); mc.ingredients.push(val)
+                }
+                else { mc = JSON.parse(mc); mc.ingredients = {val}}
+            div.parentNode.remove()
+            m.dataset.data = JSON.stringify(mc)
+            loadDataset()
+        }
 
     }
 
 }
+
+function raOpenCat(obj,child){// object, and "cat" location
+    let p = child.parentNode;
+    let rf = document.getElementById("raIngredientFileList");
+    if (p.id == "raIngredientListC"){
+        while (rf.childNodes.length > 0) { rf.childNodes[0].remove() } }
+        // remove children of "raIngredientFileList"
+     let fl = document.createElement("div"); fl.id = "raIFL" + rf.childNodes.length+1; rf.appendChild(fl); fl.classList.add("raFileDiv"); fl.classList.add("dropZone"); fl.ondragover = adr;
+     fl.ondrop = raIDragDrop; fl.ondragenter = raIDragEnter; fl.ondragleave = raIDragLeave;
+
+     let nm = document.createElement("div"); nm.className = "raCategoryInside"; nm.innerText = child.innerText; fl.appendChild(nm);
+        if (child.innerText.substring(0,5) == "Cat: "){
+            nm.innerText = ""
+           let n = document.createElement("div"); n.innerText = "Cat: "; nm.appendChild(n); n.className = "raCIN";
+           edit = document.createElement("input"); edit.value = child.innerText.substring(5); edit.contentEditable = true; nm.appendChild(edit); edit.className = "raCIE";
+                edit.onkeyup = function(){
+                    let c = child; let cd = JSON.parse(child.dataset.data); cd[1] = edit.value; c.dataset.data = JSON.stringify(cd); c.innerText = "Cat: " + cd[1]; raRefreshList()
+                }
+
+           var eb = document.createElement("div"); eb.style.backgroundImage = "url(\"assets/images/edit.svg\")"; eb.className = "SVGD"; nm.appendChild(eb); eb.style.width = "1.5em"; eb.style.height = "1.5em"; eb.style.paddingLeft = "0.2em"; eb.onclick = function(){ edit.focus() }
+
+        }
+
+
+     let list = obj; let start = 1; if (list[0] == "cat") {start = 2}
+     for (var i=start; i<list.length; i++){ raCID(list[i],fl);  }
+}
+
+/* STEPS */
+function raCStep(x){
+    let ab = document.getElementById("raStepDiv");
+    let s = document.createElement("div"); s.className = "raStep"; ab.appendChild(s);
+        let sn = document.createElement("div"); sn.className = "raStepNum";  sn.innerText = document.getElementById("raStepDiv").childNodes.length; s.appendChild(sn);
+        let st = document.createElement("textarea"); st.className = "raStepText"; s.appendChild(st); if (x !== undefined) { st.value = x }; st.placeholder = "Click here to input the step";
+        let md = document.createElement("div"); md.className = "raStepMD"; s.appendChild(md);
+            let mu = document.createElement("div"); mu.className = "rasmOp SVGD"; mu.dataset.text = "Move Up"; md.appendChild(mu); mu.style.backgroundImage = "url(\"assets/images/arrow_up.svg\")";
+            let mt = document.createElement("div"); mt.className = "rasmOp SVGD"; mt.dataset.text = "Delete"; md.appendChild(mt); mt.style.backgroundImage = "url(\"assets/images/delete.svg\")";
+            let ml = document.createElement("div"); ml.className = "rasmOp SVGD"; ml.dataset.text = "Move Down"; md.appendChild(ml); ml.style.backgroundImage = "url(\"assets/images/arrow_down.svg\")";
+            mu.onclick = function(){ raCSEdit(s,"u") }; ml.onclick = function() { raCSEdit(s,"l")}; mt.onclick = function(){ raCSEdit(s,"d")  }
+if (x == undefined){ ab.scroll({top: ab.scrollHeight, behavior: "smooth"}) }
 }

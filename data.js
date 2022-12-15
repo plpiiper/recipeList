@@ -1,27 +1,6 @@
-var raOptions = [
-    {name: "Help", texts: [
-        ["h2",".ClassName","Help Overview"],
-        ["p",".ClassName","This section will tell you how to use the Recipe Editor. Important to note: When you exit this screen without saving a recipe, your work will NOT be saved (for now)."],
-        ["p","The Recipe Editor allows you to create new recipes and edit already made recipes. To the side of this editor is a list of menu options that you can click to go to different sections (including this one)."],
-        ["h3",".ClassName","Overview"],
-        ["p","\"Overview\" contains the easier options to change. The recipe name, time, and category can be changed here. You will also see a preview of the current ingredients and steps of the recipe here as well. You will be editing the ingredients and steps in a different section. you will be saving the recipe here, however the minimum requirements to save it is: Category, Name, 1 Ingredient, and 1 Step."],
-        ["p",".ClassName","Here, just simply click into the input fields and type in your changes. The Category input will suggest pre-existing categories, but you can create new categories."],
-        ["p","The default time type is in \"Minutes\" To the left of this will be an input which relates to the current time type. (So the default method is having that number correspond to the number of minutes it takes to do the recipe. You can change the time type to \"Hours\" and change it so that the input relates to the number of hours. Another input to the right will show up. This will relates to the number of minutes and is only visible when \"Hours\" is selected."]
-        ]},
-    {name: "Overview", texts: [
-        ["div","#recipeName","Recipe Name"],
-        ["div","#raCatDiv","Category"]
-        ]
-        }
-
-]
-
-
-
 var recipes = [
 { name: "Beef Stroganoff", cat: "Red Meat", time: [1,"Hour"],
-id: "401BS",
-ingredients: ["Kosher Salt",["Black Pepper","(Ground)"], ["Parsley", "(Fresh, Chopped)","-for garnish-"], ["1½","lbs",["Sirloin Roast","Beef Tenderloin"]], ["2","Tablespoons","All-Purpose Flour"], ["1½","Teaspoons","Hot Paprika"], ["1","Tablespoon","Neutral Oil"], ["4","Tablespoons","Butter","(Unsalted)"], ["½","lbs","Button Mushrooms","(Cut into corners)"], ["2","Small","Shallots","(Thinly sliced)"], ["12","Ounce","Wide Egg Noodles"], ["¼","Cup","Dry White Wine"], ["1","Cup","Heavy Cream"], ["1½","Teaspoons","Worcestershire Sauce"], ["1½","Teaspoons","Dijon Mustard"]
+ingredients: ["Kosher Salt",["Black Pepper","(Ground)"], ["Parsley", "(Fresh, Chopped)","-for garnish-"], ["alt",["1½","lbs","Sirloin Roast"],["1½","lbs","Beef Tenderloin"]], ["2","Tablespoons","All-Purpose Flour"], ["1½","Teaspoons","Hot Paprika"], ["1","Tablespoon","Neutral Oil"], ["4","Tablespoons","Butter","(Unsalted)"], ["½","lbs","Button Mushrooms","(Cut into corners)"], ["2","Small","Shallots","(Thinly sliced)"], ["12","Ounce","Wide Egg Noodles"], ["¼","Cup","Dry White Wine"], ["1","Cup","Heavy Cream"], ["1½","Teaspoons","Worcestershire Sauce"], ["1½","Teaspoons","Dijon Mustard"]
 ],
 steps: [
 "Bring a large pot of salted water to a boil",
@@ -97,7 +76,7 @@ steps: [
 },
 {name: "Thin Pan-Seared Pork Chops", cat: "Red Meat", time: [30,"Minutes"],
 ingredients: [
-["cat","PORK CHOPS and BRINE", ["1/2","Cup","Kosher Salt"], ["1/4","Cup",["Brown Sugar","Granulated Sugar"]], [2,"Bay Leaves"], [1,"Teaspoon","Coriander Seeds"],[12,"Black Peppercorn","(Lightly crushed)"],[6,"Allspice Berries","(Lightly crushed)"],[8,"Pork Chops","(4-5 ounces each)","-Thin, bone-in-"], "Extra-Virgin Olive Oil"],
+["cat","PORK CHOPS and BRINE", ["1/2","Cup","Kosher Salt"], ["alt",["1/4","Cup","Brown Sugar"],["1/4","Cup","Granulated Sugar"]], [2,"Bay Leaves"], [1,"Teaspoon","Coriander Seeds"],[12,"Black Peppercorn","(Lightly crushed)"],[6,"Allspice Berries","(Lightly crushed)"],[8,"Pork Chops","(4-5 ounces each)","-Thin, bone-in-"], "Extra-Virgin Olive Oil"],
 ["cat","HERB SALAD", [2,"Tablespoons","Lemon Juice"],["1/2","Teaspoons","Lemon Zest","(Grated)"], [3,"Tablespoons","Extra-Virgin Olive Oil"], "Salt", "Black Pepper", ["and",[5,"Ounces","Baby Arugula","-About 4 cups-"],"Arugula", ["Parsley","-Leaves-"],"Mint Leaves", ["Pecorino Cheese","(Optionally)"] ] ]
 ],
 steps: [
@@ -661,6 +640,24 @@ ingredients: [ ["1½","Pounds","Chicken Thighs","(Boneless, Skinless)"], [1,"Tab
 ],
 steps: ["Pat chicken thighs dry with a paper towel. Season both sides of each thigh liberally with salt, pepper, and Italian seasoning.","Heat 1 tablespoon olive oil in a dutch oven or large stew pot over medium high heat. Add the chicken and cover the pot with a lid. Cook for 5-7 minutes until golden brown on bottom, remove lid and flip chicken thighs over. Cook for another 5-7 minutes, covered with lid, again until golden brown and cooked through (temperature reaches 165˚F). Remove to a bowl, shred with two forks, and set aside.","Drain excess fat out of pan, and when back on heat, pour half of the wine into the pan. Deglaze the pan by scraping the browned bits off the bottom of the pan (keeping it in the pan!).","If necessary, add another tablespoon of olive oil to the pan. Saute onion, carrot and celery in pan over medium high heat and until softened, about 7 minutes. Add garlic and sauté for 30 seconds to 1 minute, until fragrant.","Deglaze the pan again with the rest of the white wine (or white wine vinegar), scraping up browned bits on the bottom of the pan.","Add the chicken broth, potatoes, shredded chicken, barley, chicken broth, thyme, rosemary, and sage to the pot. Stir to combine and bring to a boil. Reduce to a simmer, cover with a lid, and cook for about 30 minutes, until chicken and potatoes are tender. Garnish with fresh parsley if desired."
 ]
+},
+{name: "Ribollita  With Cabbage", cat: "Soup", time: ["2¾","Hour"],
+    ingredients: [ [6,"Ounces",["White Beans","Borlotti Beans"],"(Soaked)","-If desired, soaked for 4 Hours, and then drained-"], [1,"Onion","(Cut in half)","-1/2 Chopped, 1/2 left intact-"], [3,"Cloves","Garlic","(Large)","-1 Crushed, the rest minced-"], ["Salt","(to taste)"], [3,"Tablespoons","Extra-Virgin Olive Oil"],[1,"Large","Carrot","(Diced)"], [1,"Pinch","Red Chili Flakes"], ["1/4",["Savoy Cabbage","Green Cabbage"],"(Cored and shredded)","-2 cups shredded-"], [1,"Can","Tomato","(14-ounce)","-Chopped or pureed tomatoes, with juice-"], ["3/4","Pound",["Swiss Chard","Kale"],"(Stemmed, cleaned, and chopped)","-Or, cut in chiffonade, 3 cups chopped greens-"],[1,"Bouquet Garni","(Made with: a bay leaf, a few sprigs each thyme and parsley, and a Parmesan rind)"],[6,"Slices","Bread","(Thick, Country)","-Preferably whole-grain, about 6 ounces-"]
+    ],
+    steps: ["Place the beans in a medium saucepan, and add 4 cups water, the unchopped onion half and the crushed garlic clove. Bring to a boil. Reduce the heat, add salt to taste, cover and simmer 1 hour. Remove the onion halves. Taste and adjust seasonings.", "Heat 2 tablespoons of the oil in a heavy soup pot, and add the chopped onion, carrots and celery. Cook, stirring often, until the onion is tender, about five minutes. Add the garlic and chili flakes, and stir together for 30 seconds to a minute until fragrant. Add the cabbage. Cook, stirring, until the cabbage wilts, three to five minutes. Add the tomatoes. Cook, stirring, until the tomatoes cook down and smell fragrant, five to 10 minutes. Season to taste with salt.","Stir in the beans and their liquid, add the bouquet garni and another 2 cups of water, and bring to a boil. Reduce the heat, cover and simmer 30 minutes or until the beans are tender. Taste and adjust seasonings. Add the greens, raise the heat and simmer covered for another 15 minutes. The greens should be falling apart in the soup. Remove the bouquet garni.","Meanwhile, preheat the oven to 300 degrees. Place the bread on the rack, and toast until dry but not browned, about 15 to 20 minutes. Break up into pieces. Remove about 1 cup of the beans and vegetables from the soup. Bring the remaining soup to a simmer, and add the bread. Submerge in the soup, and remove the soup from the heat. Let stand for 20 minutes until the bread is soft. Blend, using a hand immersion blender or the pulse action of a food processor. Return to the pot, add the beans and vegetables you set aside, and heat through. The ribollita should have the consistency of oatmeal. Dilute with water as necessary. Taste and adjust salt and pepper. Spoon the ribollita into bowls or onto soup plates, drizzle olive oil over each bowl and serve."
+    ]
+},
+{name: "Perfect Instant Ramen", cat: "Soup", time: [10,"Minutes"],
+    ingredients: [[1,"Pack","Ramen Noodles","(With flavor packet)"],[1,"Large","Egg"],["½","Teaspoon","Butter"],[2,"Slices","American Cheese"],["¼","Teaspoon","Sesame Seeds","(Toasted)"],["½","Scallion","(Green part only, thinly sliced on the bias)","-Optional-"]
+    ],
+    steps: [ "Bring 2½ cups of water to a boil in a small saucepan. Add the noodles and cook for 2 minutes. Add the flavor packet, stir, and continue to cook for another 30 seconds.", "Remove the pan from the heat and carefully add the egg. Do not stir; pull the noodles over the egg and let sit for one minute to poach.", "Carefully transfer everything to a serving bowl, add the butter, cheese and sesame seeds and mix. Garnish with the scallions if desired."
+    ]
+},
+{name: "San Francisco-Style Vietnamese American Garlic Noodles", cat: "Noodles", time: [15,"Minutes"],
+    ingredients: [ [4,"Tablespoons","Butter","(Unsalted)"],[20,"Cloves","Garlic","(Medium)","-Minced or smashed in a mortar and pestle-"],[4,"Teaspoons","Oyster Sauce"],[2,"Teaspoons","Fish Sauce"],[1,"Pound","Spaghetti","(Dry)"],[1,"Ounce",["Parmesan","Pecorino"],"(Grated)","-Heaping 1/4 Cup-"],["Scallions","(Small handful, thinly sliced scallions)"]
+    ],
+    steps: ["Melt the butter in a wok or saucepan over medium heat. Add the garlic and cook, stirring, until fragrant but not browned, about 2 minutes. Add the oyster sauce, soy sauce and fish sauce, and stir to combine. Remove from the heat.","Meanwhile, bring 1½ inches of water to a boil in a 12-inch skillet or sauté pan over high heat. (Alternatively, heat up just enough water to cover the spaghetti in a large Dutch oven or saucepan.) Add the pasta, stir a few times to make sure it’s not clumping, and cook, stirring occasionally, until just shy of al dente (about 2 minutes short of the recommended cook time on the package).","Using tongs, transfer the cooked pasta to the garlic sauce, along with whatever water clings to it. (Reserve the pasta water in the skillet.) Increase the heat to high, add the cheese to the wok, and stir with a wooden spatula or spoon and toss vigorously until the sauce is creamy and emulsified, about 30 seconds. If the sauce looks too watery, let it keep reducing. If it looks greasy, splash some more cooking water into it and let it re-emulsify. Stir in the scallions (if using), and serve immediately."
+    ]
 }
 
 
@@ -675,3 +672,97 @@ var category = []
 for (var i=0; i<recipes.length;i++){
   if (!category.includes(recipes[i]["cat"])) {category.push(recipes[i]["cat"])}
 }
+
+
+var raOptions = [
+    {name: "Help", texts: [
+            { type: "h2", className: "className",
+                dataset: [["id","#12deff"],["number",12345]],
+                tx: "Help Overview"
+            },
+            { type: "p", className: "className",
+                tx: "This section will tell you how to use the Recipe Editor. Important to note: When you exit this screen without saving a recipe, your work will NOT be saved (for now)."
+            },
+            { type: "p", tx: "The Recipe Editor allows you to create new recipes and edit already made recipes. To the side of this editor is a list of menu options that you can click to go to different sections (including this one)."
+            },
+            {type: "h3", className: "raOpHeader", tx: "Overview"
+            },
+            {type: "p", tx: "\"Overview\" contains the easier options to change. The recipe name, time, and category can be changed here. You will also see a preview of the current ingredients and steps of the recipe here as well. You will be editing the ingredients and steps in a different section. you will be saving the recipe here, however the minimum requirements to save it is: Category, Name, 1 Ingredient, and 1 Step."},
+            { type: "p", tx: "Here, just simply click into the input fields and type in your changes. The Category input will suggest pre-existing categories, but you can create new categories."
+            },
+            {type: "p", tx: "The default time type is in \"Minutes\" To the left of this will be an input which relates to the current time type. (So the default method is having that number correspond to the number of minutes it takes to do the recipe. You can change the time type to \"Hours\" and change it so that the input relates to the number of hours. Another input to the right will show up. This will relates to the number of minutes and is only visible when \"Hours\" is selected."}
+        ]},
+    {name: "Overview", texts: [
+            {type: "div", id: "raRecipeName", className: "raContainer", style: " margin-bottom: 5px;", children: [
+                    {type: "span", tx: "Recipe Name", style: "margin-right: 10px;"},
+                    {type: "input", className: "raInput", ops: [
+                            ["type","text"],["placeholder","Recipe Name"]
+                        ],onfunction: [
+                            ["onkeyup",function(event){changeDataset()}]
+                        ]    }
+                ]},
+            {type: "div", id: "raCatDiv", className: "raContainer", style: "margin-bottom: 5px;", children: [
+                    {type: "span", tx: "Recipe Category", style: "margin-right: 10px;"},
+                    {type: "datalist", id: "raCatData", ops: category},
+                    {type: "input", className: "raInput", id: "raCatOp", ops: [
+                    ["list","raCatData"],["name","raCatOp"]],
+                        onfunction: [["onkeyup",function(event){changeDataset()}]]
+                    }
+                ]},
+            {type: "div", id: "raTimeDiv", className: "raContainer", style: "margin-bottom: 5px;",
+                children: [
+                    {type: "span", tx: "Time", style: "margin-right: 10px;"},
+                    {type: "input", className: "raInput", id: "raTimeInput1", style: "width: 40px; text-align: center;",  ops: [
+                    ["type","number"],["max","60"] ["min","0"]
+                    ],  onfunction: [["onkeyup",function(event){changeDataset()}]]
+                    },
+                    {type: "select", className: "raSelect", ops: ["Minutes","Hours"], id: "raTimeSelect", onfunction: [
+                    ["onchange",function(event){
+                        if (event.composedPath()[0].value == "Hours") {document.getElementById("raTimeInput2").style.display = "block"}
+                        else { document.getElementById("raTimeInput2").style.display = "none"; document.getElementById("raTimeInput2").value = "" }
+                    }]
+                    ]
+                    },
+                    {type: "input", className: "raInput", id: "raTimeInput2", style: "width: 40px; text-align: center; display: none;", ops: [
+                    ["type","number"],["max","60"]
+                    ], onfunction: [["onkeyup",function(event){changeDataset()}]]
+                    }
+                ]
+            },
+            {type: "div", id: "raItemsDiv", children: [
+                    {type: "div", id: "raItemsStepsDiv",
+                        onfunction: [ ["onload",function(){ raCreateSteps() }]
+                        ]},
+                    {type: "div", id: "raItemsIngredientDiv",
+                        onfunction: [ ["onload",function(){ raCreateIngredients() }]
+                    ]}
+            ]}
+        ], functions: [
+        ["onload",function(){
+            loadDataset()
+        }]
+        ]
+    },
+    {name: "Ingredients", texts: [
+            {type: "div", id: "raIngredientDiv", style: "display: flex;", children: [
+                    {type: "div", id: "raIngredientList", children: [
+                            {type: "div", id: "raIngredientListC"},
+                            {type: "div", id: "raIngredientMenu", children: [
+                                    {type: "div", className: "raIMOp SVGD", dataset: [["text","Add Ingredient"]], style: "background-image: url(\"assets/images/noteAdd.svg\")", onfunction: [
+                                    ["onclick", function(){raCIngredientDiv()}]]
+                                    },
+                                    {type: "div", className: "raIMOp SVGD", dataset: [["text","Add Category"]], style: "background-image: url(\"assets/images/folderAdd.svg\")", onfunction: [
+                                            ["onclick", function(){raCCatDiv()}]]
+                                    }
+                            ]}
+                    ]},
+                    {type: "div", id: "raIngredientFileList"}
+            ]}
+    ]},
+    {name: "Steps", texts: [
+            {type: "div", id: "raStepDiv"},
+            {type: "div", id: "raSDBtn", onfunction: [["onclick",function(){raCStep()}]], tx: "+ Add Step"
+            }
+        ]}
+
+]

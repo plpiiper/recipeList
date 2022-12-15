@@ -7,11 +7,25 @@ font-family: Noto;
 width: 100%; height: 100%;
 }
 div {position: relative; box-sizing: border-box; font-size: 18px; font-family: Noto; transition: 0.2s;}
+.SVGD {background-repeat: no-repeat; background-size: contain; background-position: center;
 
+}
 @font-face { font-family: "Chakra"; src:url("assets/fonts/ChakraPetch-Light.ttf"); }
 
 @font-face { font-family: "Noto"; src:url("assets/fonts/NotoSansJP-Regular.otf"); }
+:root {
+    --c1: 180, 145, 174;
+    --c2: 102, 143, 128;
+    --c3: 74, 102, 112;
+    --c4: 214, 162, 173;
+    --c5: 117, 87, 125;
+    --c1A: 191,127,122; --c1B: 204,155,171; --c1C: 195,155,204; --c1D: 173,147,194;
+    --c2A: 103,146,156; --c2B: 109,166,161; --c2C: 109,166,129; --c2D: 103,156,106;
+    --c3A: 76,86,125; --c3B: 82,107,135; --c3C: 82,135,135; --c3D: 76,125,111;
+    --c4A: 227,176,161; --c4B: 237,174,168; --c4C: 237,168,218; --c4D: 219,161,227;
+    --c5A: 138,90,109; --c5B: 148,96,143; --c5C: 123,96,148; --c5D: 101,90,138;
 
+}
 
 #content {
 width: 100%; height: 100%; margin: 0; padding: 0; box-sizing: border-box; font-family: Noto;
@@ -21,26 +35,28 @@ display: flex; flex-direction: column;
 #sideBarTHide {
     position: absolute; top: 0;
     right: -40px; height: 40px; width: 40px;
-    background-color: red;
     display: flex; justify-content: center; align-items: center; z-index: 8;
     border-radius: 0 20px 20px 0; background-color: inherit; border-left:2px solid white;
 }
     #sideBarTHide:hover {cursor: pointer;}
 
 #mDiv {width: 100%; height: 100%; display: flex;}
-#sideBar { max-width: 30vw; width: 30%; height: 100%; padding-left: 2%; box-sizing: border-box;
-background-color: #DB7962;
+
+#sideBar {  height: 100%; padding-left: 2%; box-sizing: border-box;
+background-color: rgba(var(--c1));
 }
+    .openSB { max-width: 30vw; width: 30%;}
+    .closeSB { max-width: 0vw; width: 0%; overflow: hidden;}
 
 
 #fSearchBarDiv {width: 85%; height: 45px; margin-top: 15px; outline: none; transition: 0.2s; box-sizing: border-box; display: flex; align-items: center; text-overflow: ellipsis; padding: 10px 15px; margin-bottom: 20px; font-size: 1em; border-radius: 5px 0 0 5px;
-border: 2px solid #F26661;
+border: 2px solid rgba(var(--c4));
 background-color: white;
 }
   #fSearchBarDiv:after {
 width: 20px; height: 100%; position: absolute;  left: 100%; top: -2px; content: ""; background-image: url("assets/images/search.svg"); background-position: center; background-size: contain; background-repeat: no-repeat;
 border-left: 0; border-radius: 0 5px 5px 0;
-border: 2px solid #F26661; background-color: #F26661;
+border: 2px solid rgba(var(--c4)); background-color: rgba(var(--c4));
 }
   #fSearchBarDiv:before {
 content: "Search for recipes"; position: absolute; font-size: 0.6em;
@@ -48,18 +64,14 @@ top: 40px; left: 2px;
 }
 
 
-
 #fSelectCats {font-size: 1em; width: 85%; height: 40px; padding: 5px; box-sizing: border-box; border-radius: 5px; user-select: none; padding-left: 10px; background-color: white; margin-top: 40px;
-border: 2px solid #F26661;
+border: 2px solid rgba(var(--c4));
 }
   #fSelectCats:after {
 height: 30px; width: 20px; content: "▼"; padding-left: 3px; margin: 3px; position: absolute; top: 0; box-sizing: border-box; top: 0px; display: flex; justify-content: center; align-items: center; right: 0; border-radius: 0 10px 10px 0; transition: 0.2s;
-color: #F26661; border-left: 2px solid #F26661;
+color: rgba(var(--c4)); border-left: 2px solid rgba(var(--c4));
 }
-  #fSelectCats:before { content: "Select recipe category"; position: absolute; font-size: 0.6em;
-top: 36px; left: 2px;
-}
-
+  #fSelectCats:before { content: "Select recipe category"; position: absolute; font-size: 0.6em; top: 36px; left: 2px;}
 
   #fSelectCatsDivs {
 width: 100%; max-height: 0px; overflow-y: auto; position: absolute;
@@ -67,7 +79,7 @@ background-color: white; border-radius: 0 0 10px 10px; top: 39px; left: 0; z-ind
 }
   .fCatsDiv {
 display: flex; height: 25px; margin-bottom: 2px; font-size: 0.9em;}
-    .fCatsDiv:hover {background-color: #F26661;}
+    .fCatsDiv:hover {background-color: rgba(var(--c4));}
 
   .fCatsCheck {
 width: 20px; height: 20px; box-sizing: border-box; display: flex; justify-content: center; align-items: center;
@@ -78,7 +90,7 @@ width: 90%; height: 20px; display: flex; margin-bottom: 5px; margin-left: 10px; 
 
 #fSelectCats:hover {border-radius: 5px 5px 0 0; z-index: 4;}
 #fSelectCats:hover:after {border-radius: 0 5px 0 0;}
-#fSelectCats:hover #fSelectCatsDivs {max-height: 200px; box-shadow: 2px 2px 3px rgba(242,102,97,0.4);}
+#fSelectCats:hover #fSelectCatsDivs {max-height: 200px; box-shadow: 2px 2px 3px rgba(var(--c5A));}
 
 
 #fIngListDiv {
@@ -86,115 +98,98 @@ width: 90%; max-height: 90px; min-height: 40px; overflow-y: auto; margin-top: 40
 background-color: white; }
         #fIngListDiv::-webkit-scrollbar {  width: 5px;  }
         #fIngListDiv::-webkit-scrollbar-track {  background: white;  }
-        #fIngListDiv::-webkit-scrollbar-thumb {  background: #F26661;  }
-        #fIngListDiv::-webkit-scrollbar-thumb:hover {  background: #F26661;  }
+        #fIngListDiv::-webkit-scrollbar-thumb {  background: rgba(var(--c4));  }
+        #fIngListDiv::-webkit-scrollbar-thumb:hover {  background: rgba(var(--c4));  }
         .fSelectedIngr {
           display: flex; flex-wrap: wrap; justify-content: center; align-items: center; border-radius: 10px; padding: 2px 5px; font-size: 0.7em; margin: 3px;
-      color: white; background-color: #F26661;
+      color: white; background-color: rgba(var(--c2C));
         }
-        .fSelectedIngr:hover {cursor: pointer; background-color: #F29161;}
+            .fSelectedIngr:hover {cursor: pointer; background-color: rgba(var(--c2));}
 
 #fIngSearchDiv {height: 32px; width: 90%; border-radius: 0 0 5px 5px;
-background-color: #F26661; border-top: 1px solid white;
+background-color: rgba(var(--c4)); border-top: 1px solid white;
 }
-    #fIngSearchInp {height: 30px; box-sizing: border-box; width: 90%; outline: none; border: none; background-color: transparent; padding-left: 5%; color: white;}
-        #fIngSearchInp::placeholder {color: rgba(240,240,240); }
-    #fIngList {
-width: 100%; background-color: white; border-radius: 0 0 5px 5px; margin-top: 2px; max-height: 140px; overflow-y: auto; z-index: 3;
-}
+    #fIngSearchInp {height: 30px; box-sizing: border-box; width: 90%; outline: none; border: none; background-color: transparent; padding-left: 5%; color: black;}
+        #fIngSearchInp::placeholder {color: black; }
+    #fIngList { width: 100%; background-color: white; border-radius: 0 0 5px 5px; margin-top: 2px; max-height: 140px; overflow-y: auto; z-index: 3;}
         #fIngList::-webkit-scrollbar {  width: 0.5em;  }
         #fIngList::-webkit-scrollbar-track {  background: white;  }
-        #fIngList::-webkit-scrollbar-thumb {  background: #F26661;  }
+        #fIngList::-webkit-scrollbar-thumb {  background: rgba(var(--c4));  }
         #fIngList::-webkit-scrollbar-thumb:hover {  background: #b73130;  }
         .ingredientDiv {font-size: 0.8em; border-radius: 5px; width: 100%; cursor: pointer; display: flex; transition: 0.2s; align-items: center;}
-            .ingredientDiv:hover {background-color: #F26661; cursor: pointer;}
+            .ingredientDiv:hover {background-color: rgba(var(--c4)); cursor: pointer;}
             .ingredientLbl {width: 100%;}
 
-#timerDiv {display: flex;
-}
-  #timerDiv:before {
-content: "Max time for recipe"; position: absolute; font-size: 0.6em;
-top: 25px; left: 2px;
-}
-
+#timerDiv {display: flex; margin-bottom: 2em;}
+  #timerDiv:before { content: "Max time for recipe"; position: absolute; font-size: 0.6em; top: 25px; left: 2px; }
+#addRecipeBtn {background-color: white; cursor: pointer; width: 90%; border-radius: 1em; padding: 0.5em 0.8em;}
+    #addRecipeBtn:hover {cursor: pointer; background-color: rgba(var(--c1A));}
 
 
 #mainList {padding: 2.5%; width: 100%; height: 100%; overflow-y: auto;}
-  #listMenu {background-color: black; color: white; width: 100%; height: 40px; border-bottom: 2px solid white; display: flex;}
-      .hoverMenu:hover {cursor:pointer; background-color: purple;}
+  #listMenu {background-color: rgba(var(--c3)); color: white; width: 100%; height: 40px; border-bottom: 2px solid white; display: flex;}
   .recipeRow {width: 100%; min-height: 40px; border-bottom: 2px solid white; display: flex;}
-  .recipeRow:hover {background-color: pink; cursor: pointer;}
+    .recipeRow:hover {background-color: rgba(var(--c2B)); cursor: pointer;}
+        .recipeRow > div {overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
       .recipeName {width: 60%; display: flex; align-items: center; padding: 5px; padding-left: 15px; flex-wrap: wrap;}
       .recipeCat {width: 25%; display: flex; align-items: center; padding: 5px; padding-left: 15px; flex-wrap: wrap;}
       .recipeTime {width: 15%; display: flex; align-items: center; padding: 5px; padding-left: 15px; flex-wrap: wrap;}
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #toast {
-  min-width: 250px; height: 60px; margin-left: -125px;
-  background-color: #333;  color: #fff;  text-align: center; display: flex; justify-content: center; align-items: center;
-  border-radius: 2px; padding: 16px; position: fixed; z-index: 1;
-  left: 50%; bottom: 30px;
-  transform: translateY(30px);
-transition: 1s; opacity: 0;
+  min-width: 250px; max-width: 40%;  min-height: 60px; max-height: 120px; margin-left: -125px;
+  background-color: rgba(var(--c1));  color: #fff;  text-align: center; display: flex; justify-content: center; align-items: center;
+  border-radius: 2px; padding: 16px; position: fixed; z-index: 100;
+  right: 30px; bottom: 30px; transform: translateY(30px); transition: 1s; opacity: 0;
 }
-
-#toast.visible { transform: translateY(10px); opacity: 1; }
-
+    #toast.visible { transform: translateY(10px); opacity: 1; }
 
 
 .coverDiv {
-position: absolute; height: 100%; width: 100%;
-overflow-y: auto;
-background-color: rgba(0,0,0,0.3);
-display: flex; justify-content: center; align-items: center;
-    z-index: 8;
-}
+position: absolute; height: 100%; width: 100%; overflow-y: auto;
+background-color: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; z-index: 8; }
 
 #openedRecipe {
 width: 90%; height: 95%; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; padding: 1vw;
-background-color: #DB7962;
+background-color: rgba(var(--c2));
 }
   #oUpper {
-padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding: 10px;
-background-color: none;
-}
+padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding: 10px; }
     #oTitle {font-size: 1.5em; letter-spacing: 0.2em;}
-    .oUSpan {border-radius: 10px; padding: 5px 10px; display: flex; margin-left: 20px;
-background-color: #E89F5D; color: black;
-}
+    .oUSpan {border-radius: 10px; padding: 5px 10px; display: flex; margin-left: 20px; background-color: rgba(var(--c2C),0.5); }
+    .oUEdit {width: 1.5em; height: 1.5em; margin-left: 10px; background-color: rgba(var(--c2C),0.5); padding: 5px; border-radius: 0.25em; transition: 0.3s;}
+        .oUEdit:hover {cursor: pointer; background-color: white;}
 
-  #oDown { display: flex; padding: 10px; height: 90%;
-background-color: #F26661;
-}
+  #oDown { display: flex; padding: 10px; height: 90%; background-color: rgba(var(--c1)); border-radius: 0.51em; }
     .oHeaderDiv {font-size: 1.2em; margin-bottom: 5px; border-bottom: 2px solid white; height: 50px; }
 
     #oStepsDiv {width: 60%; overflow-y: auto; padding: 10px;}
       .stepDiv {display: flex; padding: 5px 10px; background-color: white; border-radius: 10px; margin-bottom: 10px;
       display: flex; align-items: center;
       }
-      .stepDiv:hover {cursor: pointer; background-color: #FFB066;}
+      .stepDiv:hover {cursor: pointer; background-color: rgba(var(--c4B));}
 
         .stepDivNum {padding-right: 5px; border-right: 2px solid black;}
         .stepDivText {padding-left: 10px;}
 
     #oIngredientsDiv {width: 40%; overflow-y: auto; padding: 10px;}
       .oIngrDiv {margin-bottom: 3px; background-color: white; display: flex;}
-          .ingSizeDiv {display: flex; width: auto; padding-right: 10px; background-color: #F29161; padding: 10px; justify-content: center; align-items: center; width: 30%;}
+          .ingSizeDiv {display: flex; width: auto; padding-right: 10px; background-color: rgba(var(--c2)); padding: 10px; justify-content: center; align-items: center; width: 30%;}
             .sizeText {margin-left: 5px;}
           .ingNameDiv {display: flex; justify-content: left; align-items: center; margin-left: 5px; width: 100%;}
                 .ingName {padding: 5px;}
-            .ingStar { background-color: black; color: white; padding: 5px; width: 40px; font-size: 1em;  display: flex; justify-content: center; align-items: center; }
+            .ingStar { background-color: rgba(var(--c3)); color: white; padding: 5px; width: 40px; font-size: 1em;  display: flex; justify-content: center; align-items: center; }
               .ingStar:hover {color: red; cursor: pointer;}
-            .ingCommDiv {width: 100%; background-color: white; margin-bottom: 20px; border: 4px solid orange;}
-                .ingCommTxt {padding: 5px; border-left: 4px solid orange; border-right: 4px solid orange;}
-                .ingCommTxt:last-child {border-bottom: 4px solid orange;}
+            .ingCommDiv {width: 100%; background-color: white; margin-bottom: 20px; border: 4px solid rgba(var(--c3C));}
+                .ingCommTxt {padding: 5px; border-left: 4px solid rgba(var(--c3C)); border-right: 4px solid rgba(var(--c3C));}
+                .ingCommTxt:last-child {border-bottom: 4px solid rgba(var(--c3C));}
 
             .ingCommX {width: 100%; padding: 2px 5px; display: flex; align-items: center; background-color: black; color: white;}
                 .ingCommX:hover {cursor: pointer; color: red;}
 
-  .altOIngrDiv {background-color: pink; padding: 7.5px; border: 2px solid black; margin: 10px 0;}
+  .altOIngrDiv {background-color: rgba(var(--c2C)); padding: 7.5px; border: 2px solid black; margin: 10px 0;}
   .altIngrHeader {padding-left: 5px; font-size: 1.1em; text-decoration: underline; margin-bottom: 5px;}
-  .altName {border-radius: 10px; background-color: pink; padding: 5px 10px; margin-right: 5px;}
+  .altName {border-radius: 10px; background-color: rgba(var(--c2B));; padding: 5px 10px; margin-right: 5px;}
   .altNameOR {margin-right: 5px; font-weight: bold;}
 
 
@@ -202,25 +197,19 @@ background-color: #F26661;
 
 
 .oScrollBar::-webkit-scrollbar {  width: 0.5em; }
+.oScrollBar::-webkit-scrollbar-track { box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);}
 
-.oScrollBar::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
+.oScrollBar::-webkit-scrollbar-thumb { background-color: white; border-radius: 5px; outline: 1px solid rgba(var(--c5A));;}
 
-.oScrollBar::-webkit-scrollbar-thumb {
-  background-color: white; border-radius: 5px;
-  outline: 1px solid orange;
-}
 
 .inputHeader {font-size: 0.9em; font-weight: normal;}
   .inputCaption {font-size: 0.8em; margin-left: 5%;}
 
 
-
 #recipeAdderDiv {
     width: 95vw; height: 90vh; background-color: white; display: flex;
 }
-    #raSideBar {width: 20vw; background-color: #DB7962;
+    #raSideBar {width: 20vw; background-color: rgba(var(--c3A));
     height: 100%; padding: 2vw; display: flex; flex-direction: column;
     }
     #raContent {width: 80vw; background-color: white;
@@ -229,18 +218,187 @@ background-color: #F26661;
 .raSBOpDiv {background-color: white; margin-bottom: 4px; padding: 2px 5px; border-radius: 5px;}
     .raSBOpDiv:hover {cursor: pointer; color: grey;}
 
+.raContainer {display: flex; align-items: center; padding: 5px;}
+.raInput { border-radius: 3px; font-size: 1em; padding: 5px 10px;
+    border: 2px solid black; width: 40%;
+}
+    .raSelect {height: 100%; padding: 5px 10px; font-size: 1em;
+    border: 2px solid black; border-radius: 3px;
+    }
+
+#raItemsDiv { overflow: auto;
+    background-color: rgba(var(--c2A)); display: flex;
+    width: 100%; height: 100%; padding: 10px;
+}
+    #raItemsDiv > div {
+    width: 45%; height: 90%;
+    background-color: rgba(var(--c3)); margin: 2.5%;
+    }
+        #raISList {overflow-y: auto; height: 90%;}
+        #raIIList {width: 100%; height: 90%; display: flex; flex-wrap: wrap; overflow-y: auto; overflow-x: hidden; padding: 0.5em;}
+            .raItemsI {display: flex; flex: 1 0 auto; background-color: white; border-radius: 10px; margin: 5px; text-align: center; justify-content: center; align-items: center; padding: 2px 5px;}
+                    .raItemsI:hover {cursor: pointer; background-color: rgba(var(--c1B));}
+            .raItemsS {display: flex; background-color: white; margin-bottom: 10px; padding: 0.5em; border-radius: 0.5em;}
+                    .raItemsS:hover {cursor: pointer; background-color: rgba(var(--c1B));}
+                .raItemsS > div:first-child {justify-content: center; align-items: center; display: flex; padding: 0 0.25em; padding-right: 0.5em;}
+                .raItemsS > div:last-child {width: 100%; padding: 0.25em;}
+        .raIC {padding: 0.5em;}
+        .raIC:has(.raItemsBtn) { display: flex; justify-content: center; align-items: center; flex-direction: column; height: 80%;
+        }
+        .raItemsBtn {
+            background-color: orangered; padding: 0.5em 1em; border-radius: 1em; font-size: 1.25em;
+        }
+            .raItemsBtn:hover {cursor: pointer; border-radius: 0.2em; background-color: transparent; text-decoration: underline; }
+
+
+    .raIH {
+        background-color: white;
+        width: 100%; height: 40px; display: flex;  justify-content: center; align-items: center; font-size: 1.1em;
+    }
+
+
+/* Ingredients */
+#raIngredientDiv { width: 100%; height: 100%; }
+    #raIngredientList { width: 30%; height: 100%; display: flex; flex-direction: column; }
+        #raIngredientListC {width: 100%; height: 100%; background-color: rgba(var(--c2)); overflow-y: auto;}
+        #raIngredientMenu {width: 100%; padding: 10px 5px; background-color: rgba(var(--c3)); height: 50px; display: flex; align-items: center;}
+            .raIMOp {width: 40px; height: 40px; background-color: white; margin-right: 10px; border-radius: 5px;
+            }
+            .raIMOp:after {
+                bottom: 100%; margin-bottom: 5px; background-color: white; border-radius: 5px; padding: 5px 2px; box-sizing: border-box; transition: 0.2s; opacity: 0; content: attr(data-text); position: absolute; min-width: 130px; font-size: 0.9em; text-align: center; box-shadow: rgba(0,0,0,0.4) 2px 2px 2px;
+            }
+                .raIMOp:hover {cursor:pointer; background-color: rgba(var(--c1B));}
+                .raIMOp:hover:after {opacity: 1;}
+
+        .raCategory {background-color: rgba(var(--c1C)); width: 100%; padding: 0.5em; border-bottom: 1px solid black; border-top: 1px solid black; padding-right: 1em;}
+            .raCategory:hover {cursor: pointer; text-decoration: underline;}
+            .raCategory:after {content: ">"; position: absolute; right: 0; margin-right: 2.5%;}
+                .raCategoryInside {display: flex; padding: 0.5em; background-color: rgba(var(--c1C)); border-bottom: 1px solid white; align-items: center;}
+                    .raCIN {margin-right: 0.2em;}
+                    .raCIE {border:0; border-bottom: 2px solid black; margin: 0.2em 0.5em; width: 70%; background-color: transparent; font-size: 1em;
+                    }
+
+
+        .raIngredient { background-color: rgba(var(--c2B)); width: 100%; padding: 0.5em; border-bottom: 1px solid white;}
+            .raIngredient:hover {cursor: pointer; text-decoration: underline;}
+    #raIngredientFileList {
+        background-color: white; width: 70%; height: 100%; border-left: 5px solid black; overflow-x: auto; display: flex; flex-wrap: nowrap;
+    }
+        .raFileDiv { background-color: rgba(var(--c2C)); width: 20vw; height: 100%;  border-right: 5px solid white; }
+        .raFileDiv:last-child {border-right: none;}
+
+/* Creating Ingredients GUI*/
+#raCID {
+    background-color: white; width: 55%; padding: 2em 2em 5em; border-radius: 1em; box-shadow: rgba(0,0,0,0.4) 4px 8px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; max-height: 96%; overflow-y: auto; overflow-x: hidden; min-height: 70%;
+}
+    #raIMD {width: fit-content; background-color: white; display: flex;
+        border: 2px solid black; margin: 0.5em; align-items: center; border-radius: 5px;
+        }
+        .raCIInput { height: 40px; font-size: 1.1em; margin-right: 1em; padding: 5px 10px;
+            border: none; border-bottom: 2px solid black; background-color: transparent; box-sizing: border-box;
+        }
+            #raciiN {width: 4em; margin-left: 1em;}
+            #raciiP {width: 7em;}
+            #raciiI {width: 100%;}
+        #racl {width: 100%; display: flex; margin-top: 3em; align-items: center;}
+        #raIMDCD {min-width: 50px; height: 60px; background-color: rgba(var(--c1)); display: flex; transition: 0.3s; flex-direction: column; padding: 5px 8px; border: none; border-radius: 0 2px 2px 0;}
+            #raIMDCD:hover {cursor: pointer; box-shadow: inset 0 -5em rgba(250,250,250,0.3);}
+            #raIMDCD > div {text-align: center; width: 100%; height: 50%; font-size: 1em;}
+
+        #raCIX {width: 100%; height: 80px; background-color: rgba(var(--c1D)); display: flex;
+             padding: 1em 0.5em; border-radius: 10px; margin-right: 1em;
+        }
+            #raCIX > div:first-child {margin-right: 1em; height: 100%; display: flex; align-items: center;}
+#raCIXX {width: 100%;}
+        #raIMCO { background-color: rgba(var(--c1)); border: 4px solid black; margin: 0.5em; padding: 1.5em 0.5em; border-radius: 0.5em; width: 100%; transition: 0.4s;
+        }
+            #raIMCO input {width: 90%; background-color: white; border: 2px solid black; border-radius: 20px; padding: 0.5em 1em; font-size: 1em; margin-bottom: 1em; margin-top: 10px;}
+
+        #raCIB {border-radius: 0.5em; padding: 0.5em 1em; font-size: 1em; min-width: 10em; border: 2px solid black; background-color: transparent; height: fit-content; transition: 0.2s;}
+            #raCIB:hover {cursor: pointer; background-color: rgba(var(--c1));}
+.noOverflow {overflow: hidden; padding:0 !important; border: none !important;}
+
+
+/* Creating Cats GUI */
+#raCCD { width: 60%; background-color: rgba(var(--c2A)); padding: calc(4vw + 75px) 5vh; border-radius: 1.5em;}
+    #raCCD .raCCDHeader {font-size: 2em; text-align: center; margin-bottom: 1em;}
+    #raCCD .raCCDContainer { display: flex; width: 100%; padding: 1em; justify-content: center;
+    }
+        .raCCDOp {background-color: white; padding: 1em 2em; margin: 1em; font-size: 1.3em; font-weight: bold; border-radius: 0.25em; font-family: Chakra;}
+            .raCCSelected {cursor: pointer; background-color: rgba(var(--c1C));}
+    #raCCD .raCCDText { padding: 0.5em; min-height: 75px;
+        font-size: 1.1em; text-align: center;
+    }
+
+
+/* Creating Steps */
+#raStepDiv {width: 100%; height: 90%; background-color: rgba(var(--c4)); padding: 1em; overflow-y: auto; display: flex; flex-direction: column;}
+    .raStep {width: 98%; background-color: white; margin: 5px; margin-bottom: 1em; padding: 0.2em; display: flex; align-items: center;}
+        .raStepNum {font-size: 1em; margin-right: 0.5em; padding: 0.25em; display: flex; justify-content: center; align-items: center; width: 5%;}
+        .raStepText {font-size: 1.1em; padding: 0.25em; width: 85%; font-family: Noto; height: 6em; border: none; border-left: 5px solid black; resize: none;}
+        .raStepMD {width: 7.5%; height: 100%; background-color: rgba(var(--c1D)); padding: 0.5em 0.2em;}
+            .rasmOp {width: 100%; height: 30%; margin: 1%; border: 2px solid transparent; border-radius: 5px;}
+                .rasmOp:after {position: absolute; content: attr(data-text); right: 110%; box-sizing: border-box; background-color: rgba(var(--c5B),0.95); min-width: 120px; display: flex; flex-direction: column; justify-content: center; text-align: center; border-radius: 0.3em; opacity: 0; transition: 0.3s; padding: 0.2em 0.4em; visibility: hidden;}
+                .rasmOp:hover:after {opacity: 1; visibility: visible;}
+                .rasmOp:hover {cursor: pointer; border: 2px solid white;}
+#raSDBtn {width: fit-content; padding: 0.75em; background-color: rgba(var(--c1)); border-radius: 0.5em; margin-top: 1em;}
+    #raSDBtn:hover {cursor: pointer; background-color: rgba(var(--c1C))}
+
+
+
+
+.dragOver {background-color: black !important;}
 
 /* MOBILE */
 @media only screen and (max-width: 850px) {
     #mDiv {flex-direction: column;}
-    #sideBar {width: 100%; max-width: 100vw;  max-height: 45vh; overflow-y: auto;}
-    #mainList {width: 100%; max-width: 100vw; max-height: 55vh;}
-    .recipeName {width: 50%;}
+    #sideBar {width: 100%; max-width: 100vw; overflow-y: auto; padding-top: 10px; padding-bottom: 20px; }
+    .openSB { max-height: 45vh; height: 45%;}
+    .closeSB { max-height: 0vh; height 0%; overflow: hidden;}
+    #mainList {width: 100%; max-width: 100vw;}
+    .recipeName {width: 55%;} .recipeTime {width: 20%;}
     .recipeRow {border-bottom: 2px solid grey;}
     #oDown {flex-direction: column;}
-        #oStepsDiv {width: 100%; border-bottom: 4px solid black;}
-        #oIngredientsDiv {width: 100%;}
-        #oTitle {letter-spacing: 0.1em; font-size: 1.4em;}
-    #sideBarTHide {left: 0; bottom: 20px; padding: 20px;}
-    #sideBar {padding-top: 10px; padding-bottom: 20px;}
+        #oStepsDiv {width: 100%; border-bottom: 4px solid black; height: 50vh;}
+            .stepDivText {font-size: 0.9em;}
+        #oIngredientsDiv {width: 100%; height: 40vh;}
+            .ingName {font-size: 0.9em;}
+        #oTitle {letter-spacing: 0em; font-size: 1em;
+        }
+    #sideBarTHide {left: 0; top: 40vh; padding: 20px; background-color: white;
+    transform: rotate(-90deg);
+    }
+
+
+/* Recipe Creator */
+#recipeAdderDiv {flex-direction: column;}
+    #raSideBar {flex-direction: row; height: fit-content; width: 100%; overflow-x: auto; padding: 1em 0.5em;}
+        .raSBOpDiv {margin-right: 0.5em; }
+    #raContent { width: 100%; height: 100%;}
+
+    /* Overview */
+    #raItemsDiv {flex-direction: column;}
+        #raItemsDiv > div {width: 95%; height: 40vh; border-bottom: 5px solid black; margin-bottom: 1em; border-radius: 1em 1em 0 0;}
+        #raItemsDiv > div > div:first-child {border-radius: 1em 1em 0 0; border-bottom: 5px solid black;}
+        #raItemsDiv > div > div:last-child {height: 85%;}
+    /* Ingredients */
+    #raIngredientDiv {overflow-x: auto;}
+        #raIngredientList {width: 50%;}
+        #raIngredientFileList {width: 50%; overflow-x: auto; overflow-y: clip;}
+            .raFileDiv {width: 45vw; float: left; min-width: 45vw;}
+        /* creating ingredients */
+        #raCID {width: 95%; max-height: 80%; min-height: 40%; padding: 1.5em 1.5em 3em; overflow: auto;}
+            #raIMD {width: 99%; overflow-x: auto;}
+                #raciiN {width: 15%; margin-left: 1em;}
+                #raciiP {width: 30%;}
+                #raciiI {width: 50%;}
+            #racl {flex-direction: column; margin-top: 1em;}
+                #racl > div:first-child {margin-bottom: 1em;}
+        /* creating cat */
+        #raCCD {width: 90%; max-height: 90%; padding: 4vh;}
+            .raCCDContainer {flex-direction: column;}
+                .raCCDOp {text-align: center;}
+    /* Steps */
+  .raStepMD {width: 15%;}
+  .raStepText {font-size: 0.9em;}
    }
