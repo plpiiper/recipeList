@@ -680,17 +680,37 @@ var raOptions = [
                 dataset: [["id","#12deff"],["number",12345]],
                 tx: "Help Overview"
             },
-            { type: "p", className: "className",
-                tx: "This section will tell you how to use the Recipe Editor. Important to note: When you exit this screen without saving a recipe, your work will NOT be saved (for now)."
+            { type: "p", tx: "This section will tell you how to use the Recipe Editor. Important to note: When you exit this website, your work will NOT be saved (for now)."
             },
             { type: "p", tx: "The Recipe Editor allows you to create new recipes and edit already made recipes. To the side of this editor is a list of menu options that you can click to go to different sections (including this one)."
             },
-            {type: "h3", className: "raOpHeader", tx: "Overview"
+            {type: "div", style: "width: 70%; padding: 1em 2em; background-color: rgba(var(--c4B)); display: flex; flex-wrap: wrap;", children: [
+                {type: "a", tx: "Overview", className: "raoA", attributes: [
+                ["href","#raoOverview"]
+                ]},
+                {type: "a", tx: "Ingredients", className: "raoA", attributes: [
+                ["href","#raoIngredients"]
+                ]}
+
+            ]},
+            {type: "h3", className: "raOpHeader", tx: "Overview", id: "raoOverview"
             },
             {type: "p", tx: "\"Overview\" contains the easier options to change. The recipe name, time, and category can be changed here. You will also see a preview of the current ingredients and steps of the recipe here as well. You will be editing the ingredients and steps in a different section. you will be saving the recipe here, however the minimum requirements to save it is: Category, Name, 1 Ingredient, and 1 Step."},
             { type: "p", tx: "Here, just simply click into the input fields and type in your changes. The Category input will suggest pre-existing categories, but you can create new categories."
             },
-            {type: "p", tx: "The default time type is in \"Minutes\" To the left of this will be an input which relates to the current time type. (So the default method is having that number correspond to the number of minutes it takes to do the recipe. You can change the time type to \"Hours\" and change it so that the input relates to the number of hours. Another input to the right will show up. This will relates to the number of minutes and is only visible when \"Hours\" is selected."}
+            {type: "p", tx: "The default time type is in \"Minutes\" To the left of this will be an input which relates to the current time type. (So the default method is having that number correspond to the number of minutes it takes to do the recipe. You can change the time type to \"Hours\" and change it so that the input relates to the number of hours. Another input to the right will show up. This will relates to the number of minutes and is only visible when \"Hours\" is selected."},
+            {type: "h3", className: "raOpHeader", tx: "Ingredients", id: "raoIngredients"
+            },
+            {type: "p", tx: "\"Ingredients\" will be your way of managing the ingredient list in the recipe (new or old). The left will contain all of the main ingredients. There will be two different types that you can create here. \"Ingredient\" that is simply an ingredient, and \"Cat\" that groups \"Ingredients\" together by a common theme."},
+            {type: "p", tx: "For <strong>\"Cat\"</strong>, there are 3 versions you can add."},
+                {type: "p", tx:"<u style='margin-left: 0.5em; font-size: 1.2em'>Type A: AND</u> should be used for grouping ingredients that need to be together, such as for creating a specific broth, or other related things that do not warrant its own category."},
+                {type: "p", tx:"<u style='margin-left: 0.5em; font-size: 1.2em'>Type B: ALT</u> should be used for grouping ingredients that can be used interchangeably. Often cases, you probably want to put an \"And\" category into this for creating an alternative to say a specific mixture of a broth."},
+                {type: "p", tx:"<u style='margin-left: 0.5em; font-size: 1.2em'>Type C: CAT</u> should be used for grouping ingredients into a specific category, such as a salad or sauce separate from the rest of the recipe."},
+            {type: "p", tx: "For <strong>\"Ingredient\"</strong>, there are a few components it:"},
+                {type: "p", tx:"<u style='margin-left: 0.5em; font-size: 1.2em'>Amount</u> This is a numerical value (plus fractions) that represents the specific amount of the ingredient (like \"2\" Carrots)"},
+                {type: "p", tx:"<u style='margin-left: 0.5em; font-size: 1.2em'>Size</u> This is a portion size that represents the size of the amount of ingredients, paired with \"Amount\" (like 3 \"Cups\" Water)"},
+                {type: "p", tx:"<u style='margin-left: 0.5em; font-size: 1.2em'>Ingredient*</u> This is the name of the ingredient and is a required field to create the ingredient."},
+                {type: "p", tx:"<u style='margin-left: 0.5em; font-size: 1.2em'>Comments</u> This is toggled to be off in general. You will need to click the \"Comment Button\" in order to open up the comment field. There can only be two comments, and the second comment can only exist when the first one is filled in."}
         ]},
     {name: "Overview", texts: [
             {type: "div", id: "raRecipeName", className: "raContainer", style: " margin-bottom: 5px;", children: [

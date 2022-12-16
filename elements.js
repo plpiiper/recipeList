@@ -104,10 +104,9 @@ var li = document.createElement("div"); li.id = "listMenu"; parent.appendChild(l
       var nc = document.createElement("div"); nc.innerText = "Name"; nc.className = "hoverMenu recipeName"; nc.id = "lName"; nc.dataset.type = "0"; li.appendChild(nc);
       var cc = document.createElement("div"); cc.innerText = "Type"; cc.className = "hoverMenu recipeCat"; cc.id = "lType"; cc.dataset.type = "0"; li.appendChild(cc);
       var tc = document.createElement("div"); tc.innerText = "Time"; tc.className = "hoverMenu recipeTime"; tc.id = "lTime"; tc.dataset.type = "0"; li.appendChild(tc);
-} // if doesn't exist
+} // if doesn't exist (First time only)
 else {
-var p_len = parent.childNodes.length-1;
-for (var i=0; i<p_len; i++) {parent.childNodes[1].remove()}
+while (parent.childNodes.length > 1){parent.childNodes[1].remove()}
 }
 
     for (var i=0; i<x.length; i++){
@@ -423,6 +422,10 @@ var div = document.createElement(type); parent.appendChild(div)
         fList.find(x => x[0] == "onload")[1]()}
         }
     }
+    if ("attributes" in obj){ let al = obj["attributes"]
+        for (var i=0; i<al.length; i++) { div.setAttribute(al[i][0],al[i][1]) }
+    }
+
 if (["ul","ol","select","datalist","input"].includes(type)) {
     // special stuff (<ul> for example
     if (type == "input"){
@@ -434,7 +437,10 @@ if (["ul","ol","select","datalist","input"].includes(type)) {
         for (var i=0; i<obj["ops"].length; i++){
             var sl = document.createElement(chT); sl.innerText = obj["ops"][i]; sl.value = obj["ops"][i];
                 if (typeof obj["ops"][i] !== "string"){
-                    for (key in obj["ops"][i]) { sl.setAttribute(key,obj["ops"][i][key]) }}
+                    for (key in obj["ops"][i]) {
+                        if (key !== "tx"){sl.setAttribute(key,obj["ops"][i][key]) }};
+                    if ("tx" in obj["ops"][i]) { sl.innerHTML = obj["ops"][i]["tx"]  }
+                    }
         div.appendChild(sl)
         }
     }
@@ -566,7 +572,6 @@ function raCID(obj,parent){
 
 function raCreateIngredients(){
 var b = document.getElementById("raItemsIngredientDiv")
-console.log(b)
     var top = document.createElement("div"); top.id = "raIIH"; top.className = "raIH"; b.appendChild(top); top.innerText = "Ingredients";
     var bot = document.createElement("div"); bot.id = "raIIList"; b.appendChild(bot); bot.className = "raIC";
 

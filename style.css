@@ -68,7 +68,7 @@ top: 40px; left: 2px;
 border: 2px solid rgba(var(--c4));
 }
   #fSelectCats:after {
-height: 30px; width: 20px; content: "▼"; padding-left: 3px; margin: 3px; position: absolute; top: 0; box-sizing: border-box; top: 0px; display: flex; justify-content: center; align-items: center; right: 0; border-radius: 0 10px 10px 0; transition: 0.2s;
+height: 30px; width: 20px; content: url("assets/images/dArrowDown.svg"); padding: 12px; padding-left: 15px; margin: 3px; position: absolute; top: 0; box-sizing: border-box; display: flex; justify-content: center; align-items: center; right: 0; border-radius: 0 10px 10px 0; transition: 0.2s;
 color: rgba(var(--c4)); border-left: 2px solid rgba(var(--c4));
 }
   #fSelectCats:before { content: "Select recipe category"; position: absolute; font-size: 0.6em; top: 36px; left: 2px;}
@@ -214,6 +214,13 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
     }
     #raContent {width: 80vw; background-color: white;
     height: 100%; padding: 2vw; display: flex; flex-direction: column; overflow-y: auto;}
+/* help etc */
+.raoA {font-size: 1em; transition: 0.2s; color: black; margin-right: 1em;}
+    .raoA:hover {color: white;}
+.raOpHeader {font-size: 1.5em; font-weight: bold; font-family: Chakra; text-decoration: underline; color: black; }
+/* end */
+
+
 
 .raSBOpDiv {background-color: white; margin-bottom: 4px; padding: 2px 5px; border-radius: 5px;}
     .raSBOpDiv:hover {cursor: pointer; color: grey;}
@@ -399,6 +406,4 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
             .raCCDContainer {flex-direction: column;}
                 .raCCDOp {text-align: center;}
     /* Steps */
-  .raStepMD {width: 15%;}
-  .raStepText {font-size: 0.9em;}
-   }
+  .raStepMD {w

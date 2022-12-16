@@ -198,38 +198,6 @@ function recallIngrToArr(obj){
 
 
 
-function refresh(type){
-var cat = document.getElementById("fSelectCats").value; var t = document.getElementById("searchBar").value; var il = document.getElementById("ingList");
-    // list
-if (type.includes("reset")){
-/*
---Refresh:
-> Cat select
-> searchbar val
-> Ing list
-> Recipe List
-> And others
-> sort
-*/
-
-}
-else {
-if (type.includes("cat")) { /*  refresh cat */
-}
-if (type.includes("search")) { /*  refresh search */
-}
-if (type.includes("fIngr")) { /*  refresh f_ingr */
-}
-if (type.includes("rList")) { /*  refresh f_ingr */
-}
-if (type.includes("changeList")){ // type = ["changeList",recipeList]
-    if (Array.isArray(type[1])) {  createRecipes(type[1])  }}
-
-
-}}
-
-
-
 function makeMinutes(time){
 if (typeof time == "object"){
   var minutes = 0;
@@ -521,10 +489,19 @@ if (d !== undefined){
 
 function turnRaToRecipe(){
 let og = document.getElementById("recipeAdderDiv").dataset.og
+    if (og !== undefined){
 let repl = recipes.findIndex(x => JSON.stringify(x) == og)
 if (repl !== -1){
-recipes[repl] = JSON.parse(document.getElementById("recipeAdderDiv").dataset.data); document.getElementById("recipeAdderDiv").dataset.og = document.getElementById("recipeAdderDiv").dataset.data;
-}}
+recipes[repl] = JSON.parse(document.getElementById("recipeAdderDiv").dataset.data);}}
+else { // new recipe
+let ob = JSON.parse(document.getElementById("recipeAdderDiv").dataset.data);
+recipes.push(ob);}
+document.getElementById("recipeAdderDiv").dataset.og = document.getElementById("recipeAdderDiv").dataset.data;
+
+let sb = document.getElementById("sideBar")
+while (sb.childNodes.length > 0) {sb.remove()}
+createSideBar(document.getElementById("sideBar"));
+}
 
 function raCSEdit(elem,mode){
     if (mode == "d"){elem.remove()}
