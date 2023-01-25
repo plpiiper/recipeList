@@ -1,3 +1,5 @@
+// noinspection SpellCheckingInspection
+
 function createSite(){
 var body = document.getElementById("content");
 
@@ -99,7 +101,8 @@ var crBtn = document.createElement("div"); crBtn.innerText = "+ Add Recipe"; p.a
 function createRecipes(x){
 var parent = document.getElementById("mainList")
 
-if (parent.childNodes.length == 0){
+// noinspection GrazieInspection
+    if (parent.childNodes.length == 0){
 var li = document.createElement("div"); li.id = "listMenu"; parent.appendChild(li)
       var nc = document.createElement("div"); nc.innerText = "Name"; nc.className = "hoverMenu recipeName"; nc.id = "lName"; nc.dataset.type = "0"; li.appendChild(nc);
       var cc = document.createElement("div"); cc.innerText = "Type"; cc.className = "hoverMenu recipeCat"; cc.id = "lType"; cc.dataset.type = "0"; li.appendChild(cc);
@@ -663,13 +666,14 @@ var lower = document.createElement("div"); lower.id = "racl"; div.appendChild(lo
             if (c.length == 2){ in2.value = c[1].substring(1,c[1].length-1)
                  }
         }
-        abtn.innerText = "Change Ingredient"; abtn.onclick = function(){raCIBtnOC(obj)}
+        abtn.innerText = "Change Ingredient";
+        abtn.onclick = function(){raCIBtnOC(obj)}
         raPreviewIngredient(writeIngredient(),"raCIXX")
     } // if changing ingr
 }
 
 function raPreviewIngredient(obj,parent){
-if (typeof parent == "string") { var p = document.getElementById(parent) } else {var p = parent}
+if (typeof parent == "string") { let p = document.getElementById(parent) } else {let p = parent}
 while (p !== null && p.childNodes.length > 0) {p.childNodes[0].remove()}
     createIngredientDiv(obj,p)
 }

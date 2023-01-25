@@ -361,7 +361,7 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
     #mDiv {flex-direction: column;}
     #sideBar {width: 100%; max-width: 100vw; overflow-y: auto; padding-top: 10px; padding-bottom: 20px; }
     .openSB { max-height: 45vh; height: 45%;}
-    .closeSB { max-height: 0vh; height 0%; overflow: hidden;}
+    .closeSB { max-height: 0vh; height: 0%; overflow: hidden;}
     #mainList {width: 100%; max-width: 100vw;}
     .recipeName {width: 55%;} .recipeTime {width: 20%;}
     .recipeRow {border-bottom: 2px solid grey;}
@@ -406,4 +406,5 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
             .raCCDContainer {flex-direction: column;}
                 .raCCDOp {text-align: center;}
     /* Steps */
-  .raStepMD {w
+    .raStepMD {width: 15%;}
+    .raStepText {font-size: 0.9em;}

@@ -657,10 +657,12 @@ steps: ["Pat chicken thighs dry with a paper towel. Season both sides of each th
     ingredients: [ [4,"Tablespoons","Butter","(Unsalted)"],[20,"Cloves","Garlic","(Medium)","-Minced or smashed in a mortar and pestle-"],[4,"Teaspoons","Oyster Sauce"],[2,"Teaspoons","Fish Sauce"],[1,"Pound","Spaghetti","(Dry)"],[1,"Ounce",["Parmesan","Pecorino"],"(Grated)","-Heaping 1/4 Cup-"],["Scallions","(Small handful, thinly sliced scallions)"]
     ],
     steps: ["Melt the butter in a wok or saucepan over medium heat. Add the garlic and cook, stirring, until fragrant but not browned, about 2 minutes. Add the oyster sauce, soy sauce and fish sauce, and stir to combine. Remove from the heat.","Meanwhile, bring 1½ inches of water to a boil in a 12-inch skillet or sauté pan over high heat. (Alternatively, heat up just enough water to cover the spaghetti in a large Dutch oven or saucepan.) Add the pasta, stir a few times to make sure it’s not clumping, and cook, stirring occasionally, until just shy of al dente (about 2 minutes short of the recommended cook time on the package).","Using tongs, transfer the cooked pasta to the garlic sauce, along with whatever water clings to it. (Reserve the pasta water in the skillet.) Increase the heat to high, add the cheese to the wok, and stir with a wooden spatula or spoon and toss vigorously until the sauce is creamy and emulsified, about 30 seconds. If the sauce looks too watery, let it keep reducing. If it looks greasy, splash some more cooking water into it and let it re-emulsify. Stir in the scallions (if using), and serve immediately."
-    ]
+    ]},
+{name: "Pork Chops", cat: "Red Meat", time: [30,"Minutes"],
+    ingredients: [[4,"Pork Loin Chops"], "Kosher Salt", ["Black Pepper","(Freshly Ground)"],[1,"Tablespoon","Rosemary","(freshly minced)"],[2,"Cloves","Garlic","(minced)"],["½","Cup","Butter","(melted)","-1 stick-"], [1,"Tablespoon","Extra-Virgin Olive Oil"]
+    ],
+    steps: ["Preheat oven to 375°. Season pork chops generously with salt and pepper.","In a small bowl mix together butter, rosemary, and garlic. Set aside.","In an oven safe skillet over medium-high heat, heat olive oil then add pork chops. Sear until golden, 4 minutes, flip and cook 4 minutes more. Brush pork chops generously with garlic butter.","Place skillet in oven and cook until cooked through (145° for medium), 10-12 minutes. Serve with more garlic butter."]
 }
-
-
 
 
 ]
