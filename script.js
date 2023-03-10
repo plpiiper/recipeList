@@ -1,4 +1,7 @@
 ing_list = getSearchList("i")
+if (localStorage.savedRecipes !== undefined){
+    recipes = JSON.parse(localStorage.savedRecipes)
+}
 
 function searchTerm(event){
 var txt = event.composedPath()[0].value;  var li = Object.keys(ing_list)
@@ -37,27 +40,38 @@ else { return li}
 
 
 function getIngredients(obj){ // for a specific recipe
+let abnormal = false; var il;
+if (typeof obj == "object" && (obj.nodeType === undefined || obj.nodeType === null)) {il = obj["ingredients"]} // if an object (and not an element)
 
-if (typeof obj == "object" && (obj.nodeType == undefined || obj.nodeType == null)) {var il = obj["ingredients"]} // if an object (and not an element)
-    else if ((typeof obj == "object" && !Array.isArray(obj)) || typeof obj == "string"){  // else, if an object (and not a string), OR is string
+else if ((typeof obj == "object" && !Array.isArray(obj)) || typeof obj == "string"){  // else, if an object (and not a string), OR is string
         if (typeof obj == "string") {var div=document.getElementById(obj)}
           //referring to an element list
         else {var div = obj}  // referring to the elemenet directly
         var il = [];
-        for (var i=0; i<div.childNodes.length; i++){
-            il.push(div.childNodes[i].innerText)  } ///gets list
+        for (var i=0; i<div.childNodes.length; i++){ let divC = div.childNodes[i];
+            if (divC.dataset.data !== undefined && divC.dataset.data !== null) {il.push(JSON.parse(divC.dataset.data))}
+            else {
+                if (divC.className === "raCategoryInside") {
+                    if (divC.dataset.name.includes("[\"cat\",\"")) {
+                        (il = JSON.parse(divC.dataset.name)).concat(il); abnormal = true; }
+                    else {il.push(divC.innerText.toLowerCase()); abnormal = true;}
+                }
+                if (divC.className === "fSelectedIngr") { // ingredient list
+                    il.push(divC.innerText) }
+                }
+                } ///gets list
+    if (abnormal){ return il }
     }
+else {console.log("err")}
+
 var i_list = [];
 
-
 // il = ["array"]
-for (var x=0; x<il.length; x++){  var i = il[x];
+for (var x=0; x<il.length; x++){  let i = il[x];
 // go through each object[x] --> ingredient array
   if (typeof i == "string") {i_list.push(i)  }
   else { var filed = fileIngr(i); if (typeof filed == "string") {i_list.push(filed)} else {i_list = i_list.concat(filed)} }
 } //loop
-
-
 return getSearchList("xlist",i_list)
 }
 
@@ -327,14 +341,14 @@ function getStat(rank,type){
 // rank >> lowest, highest
 // type = "time", "most steps", "most ingredients", etc
 
-if (type == "time"){
+if (type === "time"){
   var arr = [makeMinutes(recipes[0]["time"]),recipes[0]]
     // [0] = # minutes    [1] = object Recipe
 for (var i=1; i<recipes.length-1; i++) {
 if ("time" in recipes[i]) {
     var m = makeMinutes(recipes[i]["time"])
-        if (rank == "highest" && (arr[0]<m)) {arr[0] = m; arr[1] = recipes[i]}
-        if (rank == "lowest" && (arr[0]>m)) {arr[0] = m; arr[1] = recipes[i]}
+        if (rank === "highest" && (arr[0]<m)) {arr[0] = m; arr[1] = recipes[i]}
+        if (rank === "lowest" && (arr[0]>m)) {arr[0] = m; arr[1] = recipes[i]}
 }}  return arr  } //time
 
 
@@ -357,17 +371,16 @@ if (x !== undefined){  div.innerText = x["sh"]  }
 
 
 
-
-
 function startFilters(r){ // r = recipes (obj)
-var nm = document.getElementById("fSearchBarDiv").innerText.toLowerCase();
-var ct = document.getElementById("fSelectCats").childNodes[0].innerText.toLowerCase();
-var ing_list = getIngredients("fIngListDiv");
-var tt = JSON.parse(document.getElementById("timerDiv").childNodes[0].value)
+let nm = document.getElementById("fSearchBarDiv").innerText.toLowerCase();
+let ct = document.getElementById("fSelectCats").childNodes[0].innerText.toLowerCase();
+let ing_list = getIngredients("fIngListDiv");
+let tt = JSON.parse(document.getElementById("timerDiv").childNodes[0].value)
 // filtering:
-var filtered = r;
-if (nm.length > 0) { filtered = filtered.filter(n => n.name.toLowerCase().includes(nm)) }
-if (ct !== "select cat") { filtered = filtered.filter(n => n.cat.toLowerCase().includes(ct)) }
+let filtered = r;
+if (nm.length > 0) { filtered = filtered.filter(f => f.name.toLowerCase().includes(nm)) }
+if (ct !== "select cat") {
+filtered = filtered.filter(f => ("cat" in f) && f.cat.toLowerCase().includes(ct)) }
 if (ing_list.length > 0){
 
 filtered = filtered.filter( r=>
@@ -377,6 +390,7 @@ ing_list.every(ing => getIngredients(r).includes(ing))
 }
 filtered = filtered.filter(r => makeMinutes(r.time) <= tt)
 createRecipes(filtered)
+return filtered
 }
 
 
@@ -444,6 +458,7 @@ function writeIngredient(){
 
 function adr(event) {event.preventDefault();}
 function raIDragStart(event){
+if (document.getElementById("selectedDrop") !== null) {document.getElementById("selectedDrop").id = "";}
     event.target.id = "selectedDrop"
     event.dataTransfer.setData("text","selectedDrop")
 }
@@ -451,16 +466,38 @@ function raIDragDrop(event){
     event.preventDefault();
     let data = event.dataTransfer.getData("text");
     if (event.target.classList.contains("dropZone")) {event.target.classList.remove("dragOver")}
-    let dz = document.getElementById(data); var p = dz.parentNode
-    if (event.target.classList.contains("dropZone") && event.target.id != data){
+    let dz = document.getElementById(data); let p = dz.parentNode;
+    if (event.target.classList.contains("dropZone") && event.target.id !== data){
         if (event.target.classList.contains("raCategory")){ // dragging over Cat
-            let picked = document.getElementById(data)
-            let val = JSON.parse(event.target.dataset.data); val.push(picked.dataset.data); event.target.dataset.data = JSON.stringify(val);
-            picked.remove()
+        console.log("dragging over cat")
+            let picked = document.getElementById(data);
+            let val = JSON.parse(event.target.dataset.data);
+                val.push(JSON.parse(picked.dataset.data)); event.target.dataset.data = JSON.stringify(val); picked.remove();
         }
         else {
-        event.target.appendChild(document.getElementById(data))
-        document.getElementById(data).id = ""
+        console.log("into empty space")
+        let p = document.getElementById("raIngredientListC").childNodes[JSON.parse(event.target.dataset.parent)]
+            let picked = document.getElementById(data);
+            event.target.appendChild(picked);
+            if (JSON.parse(event.target.id.substring(5)) === 1){
+                p.dataset.data = JSON.stringify(getIngredients(event.target.id));
+            }
+            else {
+                console.log(p, picked, event.target)
+                let body = document.getElementById("raIFL" + (JSON.parse(event.target.id.substring(5))-1)); let change = body.childNodes[JSON.parse(event.target.dataset.parent)];
+                while (change.dataset.loc !== undefined){
+                    console.log(body,change)
+                    change.dataset.data = JSON.stringify(getIngredients("raIFL" + (JSON.parse(body.id.substring(5)) + 1)))
+                    if (body.id === "raIFL1"){
+                        let con = document.getElementById("raIngredientListC").childNodes[JSON.parse(body.dataset.parent)]; con.dataset.data = JSON.stringify(getIngredients(body)); break
+                    }
+                    else {
+                             body = document.getElementById("raIFL" + (JSON.parse(body.substring(5)) - 1)); change = body.childNodes[JSON.parse(change.dataset.loc)]
+                    }
+                }
+
+            }
+            raRefreshList()
         }}
     raRefreshList();
 }
@@ -479,13 +516,17 @@ function raRefreshList(){
 let b = document.getElementById("raIngredientListC");
     var il = []
     for (var i=0; i<b.childNodes.length; i++){
-        let m = b.childNodes[i]; let mc = m.dataset.data
+        let m = b.childNodes[i]; let mc = m.dataset.data;
         if (mc !== undefined) {il.push(JSON.parse(mc))}
     }
 let d = document.getElementById("recipeAdderDiv").dataset.data
 if (d !== undefined){
     d = JSON.parse(d); d.ingredients = il; document.getElementById("recipeAdderDiv").dataset.data = JSON.stringify(d); turnRaToRecipe()
-}}
+}
+if (document.getElementById("openedRecipe") !== null){
+    // console.log("refreshList")
+}
+}
 
 function turnRaToRecipe(){
 let og = document.getElementById("recipeAdderDiv").dataset.og
@@ -495,24 +536,32 @@ if (repl !== -1){
 recipes[repl] = JSON.parse(document.getElementById("recipeAdderDiv").dataset.data);}}
 else { // new recipe
 let ob = JSON.parse(document.getElementById("recipeAdderDiv").dataset.data);
-recipes.push(ob);}
+    if ("name" in ob && "steps" in ob && "ingredients" in ob && "cat" in ob){recipes.push(ob);}
+    }
+
+
 document.getElementById("recipeAdderDiv").dataset.og = document.getElementById("recipeAdderDiv").dataset.data;
 
-let sb = document.getElementById("sideBar")
-while (sb.childNodes.length > 0) {sb.remove()}
+let sb = document.getElementById("sideBar");
+while (sb.childNodes.length > 0) {sb.childNodes[0].remove()}
 createSideBar(document.getElementById("sideBar"));
+
+localStorage.savedRecipes = JSON.stringify(recipes);
 }
 
 function raCSEdit(elem,mode){
-    if (mode == "d"){elem.remove()}
-    if (mode == "u"){let above = elem.previousSibling; if (above !== null) {above.before(elem)}}
-    if (mode == "l"){let below = elem.nextSibling; if (below !== null) {below.after(elem)} }
+    if (mode === "d"){elem.remove()}
+    if (mode === "u"){let above = elem.previousSibling; if (above !== null) {above.before(elem)}}
+    if (mode === "l"){let below = elem.nextSibling; if (below !== null) {below.after(elem)} }
 
 let sl = []; let sld = document.getElementById("raStepDiv")
 for (var i=0; i<sld.childNodes.length;i++){
     let s = sld.childNodes[i]; sl.push(s.childNodes[1].value); s.childNodes[0].innerText = i+1
 }
-let b = document.getElementById("recipeAdderDiv"); let bd = JSON.parse(b.dataset.data); bd.steps = sl; b.dataset.data = JSON.stringify(bd); turnRaToRecipe();
+let b = document.getElementById("recipeAdderDiv");
+    let bd = {};
+    if (b.dataset.data !== undefined) {bd = JSON.parse(b.dataset.data);}
+ bd.steps = sl; b.dataset.data = JSON.stringify(bd); turnRaToRecipe();
 }
 
 

@@ -113,12 +113,12 @@ while (parent.childNodes.length > 1){parent.childNodes[1].remove()}
 }
 
     for (var i=0; i<x.length; i++){
-var r = x[i];
-var div = document.createElement("div"); div.className = "recipeRow";
-div.dataset.id = recipes.findIndex(x=>x.name == r.name);
-      var td = document.createElement("div"); td.className = "recipeName"; td.innerText = r["name"]; div.appendChild(td);
-      var cat = document.createElement("div"); cat.innerText = r["cat"]; cat.className = "recipeCat"; div.appendChild(cat);
-      var time = document.createElement("div");
+let r = x[i];
+let div = document.createElement("div"); div.className = "recipeRow";
+div.dataset.id = recipes.findIndex(x=> x.name == r.name);
+      let td = document.createElement("div"); td.className = "recipeName"; td.innerText = r["name"]; div.appendChild(td);
+      let cat = document.createElement("div"); cat.innerText = r["cat"]; cat.className = "recipeCat"; div.appendChild(cat);
+      let time = document.createElement("div");
 if ("time" in r) {  time.innerText = getTime(r["time"])  }
 
 time.className = "recipeTime"; div.appendChild(time);
@@ -127,8 +127,7 @@ time.dataset.time = makeMinutes(r["time"])
 
 div.onclick = function(event) {openRecipe(event)}
 parent.appendChild(div)
-}
-}
+}}
 
 
 
@@ -499,22 +498,25 @@ if (b !== undefined){
 let d = JSON.parse(b)
 if (type == "Overview"){
 // Recipe Name
-document.getElementById("raRecipeName").childNodes[1].value = d.name
+if ("name" in d){ document.getElementById("raRecipeName").childNodes[1].value = d.name}
 // Category
-document.getElementById("raCatOp").value = d.cat
+if ("cat" in d) {document.getElementById("raCatOp").value = d.cat}
 // Time
+if ("time" in d){
 let tm = makeMinutes(d.time)
 if (tm >= 60){
    document.getElementById("raTimeInput1").value = Math.floor(tm/60);
    document.getElementById("raTimeInput2").value = tm%60;
         document.getElementById("raTimeSelect").value = "Hours"; document.getElementById("raTimeInput2").style.display = "block"
      }
-else { document.getElementById("raTimeInput1").value = d.time[0] }
+else { document.getElementById("raTimeInput1").value = d.time[0] }}
 // Ingredient List & Step List do this on its own function
     let il = document.getElementById("raIIList")
     let sl = document.getElementById("raISList");
         if ("ingredients" in d){
         let id = getIngredients(d);
+            console.log(d.ingredients,id)
+            while (il.childNodes.length > 0) {il.childNodes[0].remove()}
         for (var i=0; i<id.length; i++){
             let idv = document.createElement("div"); idv.className = "raItemsI"; idv.innerText = id[i]; il.appendChild(idv)
         }}
@@ -525,8 +527,8 @@ else { document.getElementById("raTimeInput1").value = d.time[0] }
                 let s2 = document.createElement("div"); s2.innerText = d.steps[i]; sdv.appendChild(s2);
             sl.appendChild(sdv)
         }}
-}
-if (type == "Ingredients"){
+        }
+if (type.toLowerCase() === "ingredients"){
     let m = document.getElementById("raIngredientListC");
         m.classList.add("oScrollBar"); m.classList.add("dropZone");
             m.ondrop = raIDragDrop; m.ondragenter = raIDragEnter; m.ondragleave = raIDragLeave; m.ondragover = adr;
@@ -535,7 +537,6 @@ if (type == "Ingredients"){
         while (m.childNodes.length > 1) { m.childNodes[0].remove() }
         while (s.childNodes.length > 0) {s.childNodes[0].remove()}
     if ("ingredients" in d){
-        console.log(d.ingredients)
         while (m.childNodes.length > 0) {m.childNodes[0].remove()}
         for (var i=0; i<d.ingredients.length;i++){
             let norm = d.ingredients[i]
@@ -543,22 +544,20 @@ if (type == "Ingredients"){
         } // loop
     }
 }
-if (type == "Steps"){
-    let sl = d.steps;
+if (type == "Steps" && "steps" in d){
+    let sl = d.steps; console.log(d)
     for (var i=0; i<sl.length; i++){ raCStep(sl[i]) }
-}}
-
-//
+}} // overview
 }
 
 function raCID(obj,parent){
     let norm = obj;
     if (["cat","alt","and"].includes(norm[0])){ // if CAT
         let cd = document.createElement("div"); cd.classList.add("raCategory"); cd.classList.add("rac" + norm[0][0].toUpperCase() + norm[0].substring(1));
-            cd.classList.add("dropZone")
+            cd.classList.add("dropZone"); cd.dataset.loc = parent.childNodes.length;
         if (norm[0] == "cat") { cd.innerText = "Cat: " + norm[1]}
         else {cd.innerText = norm[0][0].toUpperCase() + norm[0].substring(1)}
-        cd.onclick = function(){ raOpenCat(norm,cd) }; cd.dataset.data = JSON.stringify(norm);
+        cd.onclick = function(){ raOpenCat(cd,norm,cd) }; cd.dataset.data = JSON.stringify(norm);
         parent.appendChild(cd); cd.draggable = true; cd.ondragstart = raIDragStart;
     }
     else { // Else, ingredients
@@ -661,20 +660,20 @@ var lower = document.createElement("div"); lower.id = "racl"; div.appendChild(lo
         if ("amount" in ro) {num.value = ro["amount"]}
         if ("size" in ro) {portion.value = ro["size"]}
         if ("comment" in ro){
-            let c = ro["comment"]; raIOpenC()
+            let c = ro["comment"]; raIOpenC();
             in1.value = c[0].substring(1,c[0].length-1)
             if (c.length == 2){ in2.value = c[1].substring(1,c[1].length-1)
                  }
         }
-        abtn.innerText = "Change Ingredient";
+        abtn.innerText = "Change Ingredient"; tl.innerText = "Change Ingredient";
         abtn.onclick = function(){raCIBtnOC(obj)}
         raPreviewIngredient(writeIngredient(),"raCIXX")
     } // if changing ingr
 }
 
 function raPreviewIngredient(obj,parent){
-if (typeof parent == "string") { let p = document.getElementById(parent) } else {let p = parent}
-while (p !== null && p.childNodes.length > 0) {p.childNodes[0].remove()}
+let p = parent; if (typeof parent == "string") {p = document.getElementById(parent)}
+while (p !== null && p.childNodes.length > 0) {p.childNodes[0].remove();}
     createIngredientDiv(obj,p)
 }
 
@@ -717,14 +716,15 @@ function raCCatDiv(){
         d.onmouseleave = function(){ d.classList.remove("raCCSelected")}
         d.onclick = function(){
             let m = document.getElementById("recipeAdderDiv");
-                let mc = m.dataset.data
-                var val = [d.dataset.name]; if (d.dataset.name == "cat") {val.push("New Cat")}
-                if (mc == undefined){ m.dataset.data = {val} }
+                let mc = m.dataset.data; let val = [d.dataset.name];
+                    if (d.dataset.name === "cat") {val.push("New Cat")}
+                if (mc === undefined){ let newOne = {}; newOne.ingredients = [val];
+                m.dataset.data = JSON.stringify(newOne); document.getElementById("raCCD").parentNode.remove(); loadDataset(); return}
                 else if ("ingredients" in JSON.parse(mc)) {
                     mc = JSON.parse(mc); mc.ingredients.push(val)
                 }
                 else { mc = JSON.parse(mc); mc.ingredients = {val}}
-            div.parentNode.remove()
+            document.getElementById("raCCD").parentNode.remove();
             m.dataset.data = JSON.stringify(mc)
             loadDataset()
         }
@@ -733,30 +733,37 @@ function raCCatDiv(){
 
 }
 
-function raOpenCat(obj,child){// object, and "cat" location
+function raOpenCat(elem,obj,child){// object, and "cat" location
     let p = child.parentNode;
     let rf = document.getElementById("raIngredientFileList");
-    if (p.id == "raIngredientListC"){
-        while (rf.childNodes.length > 0) { rf.childNodes[0].remove() } }
+    let amt = 0; if (p.id === "raIngredientListC") {amt = 0} else {amt = rf.childNodes.length;}
+        while (rf.childNodes.length > 0 && rf.childNodes.length > amt) {
+        rf.childNodes[0].remove() }
         // remove children of "raIngredientFileList"
-     let fl = document.createElement("div"); fl.id = "raIFL" + rf.childNodes.length+1; rf.appendChild(fl); fl.classList.add("raFileDiv"); fl.classList.add("dropZone"); fl.ondragover = adr;
-     fl.ondrop = raIDragDrop; fl.ondragenter = raIDragEnter; fl.ondragleave = raIDragLeave;
+     let fl = document.createElement("div"); fl.id = "raIFL" + (rf.childNodes.length+1);
+     console.log(event.target.parentNode)
+        if (event.target.parentNode.id.includes("raIFL")) {
+            let index = Array.from(rf.childNodes).findIndex(x => x === event.target.parentNode)+1;  console.log(index)
+            while (rf.childNodes.length > index) {rf.childNodes[index].remove()}
+        }
+        rf.appendChild(fl)
+       fl.classList.add("raFileDiv"); fl.classList.add("dropZone");     fl.ondragover = adr; fl.ondrop = raIDragDrop; fl.ondragenter = raIDragEnter;
+        fl.ondragleave = raIDragLeave;
+fl.dataset.parent = elem.dataset.loc;
 
-     let nm = document.createElement("div"); nm.className = "raCategoryInside"; nm.innerText = child.innerText; fl.appendChild(nm);
-        if (child.innerText.substring(0,5) == "Cat: "){
+     let nm = document.createElement("div"); nm.className = "raCategoryInside"; nm.innerText = child.innerText; fl.appendChild(nm); nm.dataset.name = nm.innerText.toLowerCase();
+        if (child.innerText.substring(0,5) === "Cat: "){
             nm.innerText = ""
-           let n = document.createElement("div"); n.innerText = "Cat: "; nm.appendChild(n); n.className = "raCIN";
+           let n = document.createElement("div"); n.innerText = "Cat: "; nm.appendChild(n); n.className = "raCIN"; nm.dataset.name = JSON.stringify(["cat","New Cat"])
            edit = document.createElement("input"); edit.value = child.innerText.substring(5); edit.contentEditable = true; nm.appendChild(edit); edit.className = "raCIE";
                 edit.onkeyup = function(){
-                    let c = child; let cd = JSON.parse(child.dataset.data); cd[1] = edit.value; c.dataset.data = JSON.stringify(cd); c.innerText = "Cat: " + cd[1]; raRefreshList()
+                    let c = child; let cd = JSON.parse(child.dataset.data); cd[1] = edit.value; c.dataset.data = JSON.stringify(cd); c.innerText = "Cat: " + cd[1]; raRefreshList(); nm.dataset.name = JSON.stringify(["cat",edit.value])
                 }
-
            var eb = document.createElement("div"); eb.style.backgroundImage = "url(\"assets/images/edit.svg\")"; eb.className = "SVGD"; nm.appendChild(eb); eb.style.width = "1.5em"; eb.style.height = "1.5em"; eb.style.paddingLeft = "0.2em"; eb.onclick = function(){ edit.focus() }
-
         }
 
 
-     let list = obj; let start = 1; if (list[0] == "cat") {start = 2}
+     let list = JSON.parse(child.dataset.data); let start = 1; if (list[0] === "cat") {start = 2}
      for (var i=start; i<list.length; i++){ raCID(list[i],fl);  }
 }
 
@@ -765,11 +772,13 @@ function raCStep(x){
     let ab = document.getElementById("raStepDiv");
     let s = document.createElement("div"); s.className = "raStep"; ab.appendChild(s);
         let sn = document.createElement("div"); sn.className = "raStepNum";  sn.innerText = document.getElementById("raStepDiv").childNodes.length; s.appendChild(sn);
-        let st = document.createElement("textarea"); st.className = "raStepText"; s.appendChild(st); if (x !== undefined) { st.value = x }; st.placeholder = "Click here to input the step";
+        let st = document.createElement("textarea"); st.className = "raStepText"; s.appendChild(st); if (x !== undefined) { st.value = x }; st.placeholder = "Click here to input the step"; st.onkeyup = function(){
+            raCSEdit()
+        }
         let md = document.createElement("div"); md.className = "raStepMD"; s.appendChild(md);
             let mu = document.createElement("div"); mu.className = "rasmOp SVGD"; mu.dataset.text = "Move Up"; md.appendChild(mu); mu.style.backgroundImage = "url(\"assets/images/arrow_up.svg\")";
             let mt = document.createElement("div"); mt.className = "rasmOp SVGD"; mt.dataset.text = "Delete"; md.appendChild(mt); mt.style.backgroundImage = "url(\"assets/images/delete.svg\")";
             let ml = document.createElement("div"); ml.className = "rasmOp SVGD"; ml.dataset.text = "Move Down"; md.appendChild(ml); ml.style.backgroundImage = "url(\"assets/images/arrow_down.svg\")";
             mu.onclick = function(){ raCSEdit(s,"u") }; ml.onclick = function() { raCSEdit(s,"l")}; mt.onclick = function(){ raCSEdit(s,"d")  }
-if (x == undefined){ ab.scroll({top: ab.scrollHeight, behavior: "smooth"}) }
+if (x === undefined){ ab.scroll({top: ab.scrollHeight, behavior: "smooth"}) }
 }
