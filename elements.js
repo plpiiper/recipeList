@@ -13,6 +13,19 @@ var div = document.createElement("div"); div.id = "mDiv"; body.appendChild(div)
 var div = document.createElement("div"); div.id = "toast";
 document.getElementById("content").appendChild(div);
 }
+function ic(name,ops){
+    let c = document.createElement("span"); c.classList.add("material-symbols-outlined"); c.classList.add("icon"); c.innerText = name;
+    if (ops !== undefined){
+        // [["dataset","data","Text"],["style",["bg","yel"]],["checked","true"]]
+        for (var i=0; i<ops.length; i++){ let o = ops[i];
+            if (o[0] === "dataset"){ c["dataset"][o[1]] = o[2]; }
+            if (o[0] !== "style" && o[0] !== "dataset"){ c[o[0]] = o[1] }
+            if (o[0] === "style") { for (var x=1; x<o.length; x++){ let st = o[x];
+                c["style"][st[0]] = st[1] }}
+        }}
+    return c
+}
+
 
 function toast(text){
 var div = document.getElementById("toast");
@@ -202,25 +215,25 @@ startFilters(recipes)
 
 
 
-function openRecipe(ev){
-if (typeof ev !== "number") {var i = JSON.parse(ev.composedPath()[1].dataset.id);}
-else {var i = ev}
- var r = recipes[i]
+function openRecipe(ev){ let i = ev;
+if (typeof ev !== "number") { console.log(ev.target); i = ev.target
+while (i.className !== "recipeRow"){i = i.parentNode}
+i = JSON.parse(ev.target.parentNode.dataset.id);}
+ let r = recipes[i];
 
-var div = document.createElement("div"); div.id = "openedRecipe";
-    var up = document.createElement("div"); up.id = "oUpper"; div.appendChild(up)
-        var n = document.createElement("span"); n.id = "oTitle"; n.innerText = r["name"]; up.appendChild(n)
-        var cat = document.createElement("span"); cat.className = "oUSpan"; cat.innerText = r["cat"];  up.appendChild(cat)
-        var time = document.createElement("span"); time.className = "oUSpan"; up.appendChild(time)
-        var edit = document.createElement("span"); edit.className = "oUEdit SVGD"; up.appendChild(edit); edit.onclick = function(){recipeAdderDiv(JSON.stringify(r))};
-            edit.style.backgroundImage = "url(\"assets/images/edit.svg\")";
+let div = document.createElement("div"); div.id = "openedRecipe";
+    let up = document.createElement("div"); up.id = "oUpper"; div.appendChild(up)
+        let n = document.createElement("span"); n.id = "oTitle"; n.innerText = r["name"]; up.appendChild(n);
+        let cat = document.createElement("span"); cat.className = "oUSpan"; cat.innerText = r["cat"];  up.appendChild(cat)
+        let time = document.createElement("span"); time.className = "oUSpan"; up.appendChild(time)
+        let edit = ic("edit"); edit.classList.add("oUEdit"); up.appendChild(edit); edit.onclick = function(){recipeAdderDiv(JSON.stringify(r))};
 // TIME //
 time.innerText = getTime(r["time"])
 
-  var main = document.createElement("div"); main.id = "oDown"; div.appendChild(main);
-      var sD = document.createElement("div"); sD.id = "oStepsDiv"; sD.className = "oScrollBar"; main.appendChild(sD);
+  let main = document.createElement("div"); main.id = "oDown"; div.appendChild(main);
+      let sD = document.createElement("div"); sD.id = "oStepsDiv"; sD.className = "oScrollBar"; main.appendChild(sD);
       openSteps(r,sD);
-      var iD = document.createElement("div"); iD.id = "oIngredientsDiv"; iD.className = "oScrollBar"; main.appendChild(iD);
+      let iD = document.createElement("div"); iD.id = "oIngredientsDiv"; iD.className = "oScrollBar"; main.appendChild(iD);
       openIngredients(r,iD);
 
 coverDiv(document.getElementById("content")).appendChild(div)
@@ -337,20 +350,11 @@ div.onclick = function(event){removeAround(event);}
 return div
 }
 function removeAround(event){
-  var r = event.composedPath()[0]; var cover = r
-while ((cover.parentNode !== null && cover.parentNode !== undefined) && cover.className !== "coverDiv") {cover = cover.parentNode}
-if (cover.parentNode == null || cover.parentNode == undefined) {return}
-r = cover.childNodes[0]
-
-var rc = r.getBoundingClientRect()
-var cW = event.clientX; var cH = event.clientY
-var w = rc.x; var h = rc.y;
-
-var totalW = rc.width + w; var totalH = rc.height + h;
-if ((cH < h || cH > totalH) || (cW < w || cW > totalW)) {
-    if (r.id == "recipeAdderDiv"){ createRecipes(recipes) }
-cover.remove()
+    if (event.target.className === "coverDiv") {
+    if (event.target.childNodes.length > 0 && event.target.childNodes[0].id === "recipeAdderDiv"){ createRecipes(recipes) }
+        event.target.remove()
 }}
+
 
 
 function toggleSideBar(){
