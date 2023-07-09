@@ -1,13 +1,14 @@
 ing_list = getSearchList("i")
+
+/*
 if (localStorage.savedRecipes !== undefined){
     recipes = JSON.parse(localStorage.savedRecipes)
-}
+} */
 
-function searchTerm(event){
-var txt = event.composedPath()[0].value;  var li = Object.keys(ing_list)
-li = li.filter(x => x.toLowerCase().includes(txt));
-
-return li
+function getDataset(elem,data){
+    let e = elem; if (typeof elem === "string"){e = document.getElementById(elem);}
+    let d = e.dataset[data]
+return [e,d]
 }
 
 
@@ -301,40 +302,6 @@ return list
 }
 
 
-function sortRecipesOnclick(event){
-var el = event.composedPath()[0]; var mode = el.dataset.type; var type = el.id
-// increase to next mode
-var p = JSON.parse(mode); p += 1;
-if (p > 2) {p = 0}
-el.dataset.type = p
-
-var mt = "Normal";
-  if (p == 1) {mt = "Ascending"} if (p == 2) {mt = "Descending"}
-toast("You are now sorting recipes by: " + type.substring(1) + " (" +  mt + ")")
-var rl = sortRec(recipes,type,p)
-console.log(rl)
-}
-
-
-
-function filterList(list,type){
-// list = recipe list (array of objects)
-// type = what to filter
-/*
-Example:
-["name","cat","time","ingr"]
-*/
-var fr = list;
-var fName = document.getElementById("searchBar").value;
-var fCat = document.getElementById("fSelectCats").value;
-var fIngr = []
-
-if (type.includes("name")) {  fr = fr.filter(r=>r.name.includes(fName))  }
-
-
-}
-
-
 
 
 function getStat(rank,type){
@@ -372,7 +339,7 @@ if (x !== undefined){  div.innerText = x["sh"]  }
 
 
 function startFilters(r){ // r = recipes (obj)
-let nm = document.getElementById("fSearchBarDiv").innerText.toLowerCase();
+let nm = document.getElementById("fSearchBarDiv").value.toLowerCase();
 let ct = document.getElementById("fSelectCats").childNodes[0].innerText.toLowerCase();
 let ing_list = getIngredients("fIngListDiv");
 let tt = JSON.parse(document.getElementById("timerDiv").childNodes[0].value)
@@ -395,175 +362,96 @@ return filtered
 
 
 /* element.js */
-function raCIBtnOC(mode){
-    let x = document.getElementById("raIMD")
-    if (x.childNodes[2].value.length > 0){
-        if (mode == "add") {
-            raAddIngredient(JSON.parse(document.getElementById("raIMD").dataset.ingredient),document.getElementById("raIngredientListC"));
-        }
-        if (mode !== "add") {
-            let nOne = raChangeIngredient(JSON.parse(document.getElementById("recipeAdderDiv").dataset.data),JSON.parse(document.getElementById("raIMD").dataset.ingredient),mode)
-            if (nOne !== false){
-                let bd = JSON.parse(document.getElementById("recipeAdderDiv").dataset.data); bd.ingredients = nOne;
-                document.getElementById("recipeAdderDiv").dataset.data = JSON.stringify(bd);
-                document.getElementById("raCID").parentNode.remove()
-                loadDataset()
-            }}}
-    else {
-        toast("You need to at least fill in \"Ingredient.\" Portion, amount, and comments are optional (as it's flexible to what you need it to be).")
-    }
-}
-
-
-function raChangeIngredient(list,replace,remove){
-    let nl = list; if (!Array.isArray(nl) && typeof nl == "object") { nl = list.ingredients }
-    for (var i=0; i<nl.length; i++){
-        let og = nl[i]; let cp = iIngrF(og)
-        if (!["cat","and","alt"].includes(og[0])){
-            let isSame = true; for (key in remove) {
-                if (remove[key] != cp[key]) {isSame = false}
-            }
-            if (isSame){
-                let rr = replace
-                if (typeof replace == "string") { rr = iIngrF(replace) }
-            nl[i] = recallIngrToArr(rr); return nl}
-        }
-        else{
-            let remain = og; if (og[0] == "cat") {var look = remain.splice(2)} else {var look = remain.splice(1)}
-            let rLook = raChangeIngredient(look,recallIngrToArr(replace),remove)
-            let rep = remain.concat(rLook)
-            if (rLook !== false) { nl[i] = rep; return nl}
-        }
-    }
-    return false
-}
-
-function writeIngredient(){
-    let p = document.getElementById("raIMD");
-    let obj = {}
-    let amt = p.childNodes[0].value; let por = p.childNodes[1].value; let ing = p.childNodes[2].value;
-    let com1 = document.getElementById("raIMCO").childNodes[1];
-    let com2 = document.getElementById("raIMCO").childNodes[3];
-    if (amt.length > 0) { obj.amount = amt}
-    if (por.length > 0) {obj.size = por}
-    if (ing.length > 0) {obj.ingredient = ing} else {obj.ingredient = ""}
-    if (com1.value.length > 0) {
-        obj.comment = []
-        obj.comment.push("(" + com1.value + ")")
-        if (com2.value.length > 0) {obj.comment.push("-" + com2.value + "-")}
-    }
-    p.dataset.ingredient = JSON.stringify(obj); turnRaToRecipe();
+// raFunctions
+function raGetRecipe(){
+    let bd = document.getElementById("raMainDiv"); let obj = {}
+    //name, cat, time, ingredients, steps
+        let n = document.getElementById("raName").childNodes[0].value;
+        let c = document.getElementById("raCat").value;
+        let ingr = raGetIngredients();
+        let steps = raGetSteps();
+        let time = raGetTime()
+if (n.length > 0){obj.name = n}
+if (c.length > 0){obj.cat = c}
+if (ingr.length > 0) {obj.ingredients = ingr}
+if (steps.length > 0) {obj.steps = steps}
+if (time.length > 0){obj.time = time}
     return obj
 }
 
-function adr(event) {event.preventDefault();}
-function raIDragStart(event){
-if (document.getElementById("selectedDrop") !== null) {document.getElementById("selectedDrop").id = "";}
-    event.target.id = "selectedDrop"
-    event.dataTransfer.setData("text","selectedDrop")
-}
-function raIDragDrop(event){
-    event.preventDefault();
-    let data = event.dataTransfer.getData("text");
-    if (event.target.classList.contains("dropZone")) {event.target.classList.remove("dragOver")}
-    let dz = document.getElementById(data); let p = dz.parentNode;
-    if (event.target.classList.contains("dropZone") && event.target.id !== data){
-        if (event.target.classList.contains("raCategory")){ // dragging over Cat
-        console.log("dragging over cat")
-            let picked = document.getElementById(data);
-            let val = JSON.parse(event.target.dataset.data);
-                val.push(JSON.parse(picked.dataset.data)); event.target.dataset.data = JSON.stringify(val); picked.remove();
-        }
-        else {
-        console.log("into empty space")
-        let p = document.getElementById("raIngredientListC").childNodes[JSON.parse(event.target.dataset.parent)]
-            let picked = document.getElementById(data);
-            event.target.appendChild(picked);
-            if (JSON.parse(event.target.id.substring(5)) === 1){
-                p.dataset.data = JSON.stringify(getIngredients(event.target.id));
-            }
-            else {
-                console.log(p, picked, event.target)
-                let body = document.getElementById("raIFL" + (JSON.parse(event.target.id.substring(5))-1)); let change = body.childNodes[JSON.parse(event.target.dataset.parent)];
-                while (change.dataset.loc !== undefined){
-                    console.log(body,change)
-                    change.dataset.data = JSON.stringify(getIngredients("raIFL" + (JSON.parse(body.id.substring(5)) + 1)))
-                    if (body.id === "raIFL1"){
-                        let con = document.getElementById("raIngredientListC").childNodes[JSON.parse(body.dataset.parent)]; con.dataset.data = JSON.stringify(getIngredients(body)); break
-                    }
-                    else {
-                             body = document.getElementById("raIFL" + (JSON.parse(body.substring(5)) - 1)); change = body.childNodes[JSON.parse(change.dataset.loc)]
-                    }
-                }
 
-            }
-            raRefreshList()
-        }}
-    raRefreshList();
+function raGetIngredients(){ let b = document.getElementById("raiList"); let li = [];
+    for (var i=0; i<b.childNodes.length; i++){li.push(JSON.parse(b.childNodes[i].dataset.data)) }
+    return li
+}
+function raGetSteps(){let b = document.getElementById("raslContainer"); let li = [];
+    for (var i=0; i<b.childNodes.length; i++){li.push(b.childNodes[i].childNodes[0].value) }
+    return li
+}
+function raGetTime(){let b = document.getElementById("raTimeDiv"); let time = [];
+    if (b.childNodes[0].childNodes[0].innerText === "check_box"){
+    let hrs = b.childNodes[1].childNodes[0].childNodes[0].value
+    let mins = b.childNodes[1].childNodes[1].childNodes[0].value
+        if (mins > 0 || hrs > 0){
+    let minutes = 0
+        if (hrs.length > 0 && hrs > 0){minutes += JSON.parse(60*hrs)}
+        if (mins.length > 0 && mins > 0){minutes += JSON.parse(mins)}
+    time = [minutes,"Minutes"]
+    }}
+return time
 }
 
 
 
 
-function raIDragEnter(event){
-    if (event.target.classList.contains("dropZone")) {event.target.classList.add("dragOver");}
+function raDragStart(event){
+    let slct = document.getElementById("raSelected"); if (slct !== null) {slct.id = ""}
+    event.currentTarget.id = "raSelected";
 }
-function raIDragLeave(event){
-    if (event.target.classList.contains("dropZone")) {event.target.classList.remove("dragOver")}
+function raDragDrop(event){
+    let dropInto = event.target;
+    let elem = document.getElementById("raSelected");
+        if (elem === dropInto.element){elem.id = ""; return}
+    if (dropInto.classList.contains("raiColumn")){ dropInto.appendChild(elem); }
+        if (elem !== null) {
+        elem.parentNode.dataset.data = JSON.stringify(raGetColIngr(elem.parentNode))
+        raRefreshIngredientsBack(elem); elem.id = ""; }
 }
 
-function raRefreshList(){
-let b = document.getElementById("raIngredientListC");
-    var il = []
-    for (var i=0; i<b.childNodes.length; i++){
-        let m = b.childNodes[i]; let mc = m.dataset.data;
-        if (mc !== undefined) {il.push(JSON.parse(mc))}
+function raRefreshIngredientsBack(start){
+    let col = start.parentNode;
+    while (col.previousSibling !== null) { let newList = raGetColIngr(col); col.element.dataset.data = JSON.stringify(newList); col = col.previousSibling; }
+    if (col.parentNode.id === "raiSubBody"){let newList = raGetColIngr(col); col.element.dataset.data = JSON.stringify(newList); }
+    let r = raGetRecipe();
+    document.getElementById("raMainDiv").dataset.data = JSON.stringify(r);
+}
+
+
+function raGetColIngr(col){
+let arr = []; let cn = col.childNodes
+    for (var i=0; i<cn.length; i++){
+        if (cn[i].classList.contains("raicTitle")){
+            let val = JSON.parse(cn[i].dataset.data); arr = arr.concat(val); }
+        else {arr.push(JSON.parse(cn[i].dataset.data))}}
+return arr
+}
+
+function matchRecipe(rec1,rec2){
+    for (key in rec1){if (rec2[key]) { if (rec1[key]!==rec2[key]){return false}} }
+    return true
+}
+
+function recipeData(type){
+    try{
+    if (type === "save"){
+        localStorage.recipeList = JSON.stringify(recipes);
     }
-let d = document.getElementById("recipeAdderDiv").dataset.data
-if (d !== undefined){
-    d = JSON.parse(d); d.ingredients = il; document.getElementById("recipeAdderDiv").dataset.data = JSON.stringify(d); turnRaToRecipe()
-}
-if (document.getElementById("openedRecipe") !== null){
-    // console.log("refreshList")
-}
+    if (type === "load"){
+        if (localStorage.recipeList){recipes = JSON.parse(localStorage.recipeList)}
+    }}
+    catch(err) {console.log(err)}
+
 }
 
-function turnRaToRecipe(){
-let og = document.getElementById("recipeAdderDiv").dataset.og
-    if (og !== undefined){
-let repl = recipes.findIndex(x => JSON.stringify(x) == og)
-if (repl !== -1){
-recipes[repl] = JSON.parse(document.getElementById("recipeAdderDiv").dataset.data);}}
-else { // new recipe
-let ob = JSON.parse(document.getElementById("recipeAdderDiv").dataset.data);
-    if ("name" in ob && "steps" in ob && "ingredients" in ob && "cat" in ob){recipes.push(ob);}
-    }
-
-
-document.getElementById("recipeAdderDiv").dataset.og = document.getElementById("recipeAdderDiv").dataset.data;
-
-let sb = document.getElementById("sideBar");
-while (sb.childNodes.length > 0) {sb.childNodes[0].remove()}
-createSideBar(document.getElementById("sideBar"));
-
-localStorage.savedRecipes = JSON.stringify(recipes);
-}
-
-function raCSEdit(elem,mode){
-    if (mode === "d"){elem.remove()}
-    if (mode === "u"){let above = elem.previousSibling; if (above !== null) {above.before(elem)}}
-    if (mode === "l"){let below = elem.nextSibling; if (below !== null) {below.after(elem)} }
-
-let sl = []; let sld = document.getElementById("raStepDiv")
-for (var i=0; i<sld.childNodes.length;i++){
-    let s = sld.childNodes[i]; sl.push(s.childNodes[1].value); s.childNodes[0].innerText = i+1
-}
-let b = document.getElementById("recipeAdderDiv");
-    let bd = {};
-    if (b.dataset.data !== undefined) {bd = JSON.parse(b.dataset.data);}
- bd.steps = sl; b.dataset.data = JSON.stringify(bd); turnRaToRecipe();
-}
-
-
-createSite()
-createRecipes(recipes)
+recipeData("load"); createSite(); createRecipes(recipes)
+raRecipeCreator(recipes[4])
