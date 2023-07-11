@@ -35,12 +35,13 @@ display: flex; flex-direction: column;
 }
 
 #sideBarTHide {
-    position: absolute; top: 0;
-    right: -40px; height: 40px; width: 40px;
+    position: absolute; top: 5px;
+    left: calc(20% + 30px); height: 40px; width: 40px;
     display: flex; justify-content: center; align-items: center; z-index: 8;
-    border-radius: 0 20px 20px 0; background-color: inherit; border-left:2px solid white;
+    border-radius: 0 20px 20px 0; background-color: rgba(var(--c1));
 }
     #sideBarTHide:hover {cursor: pointer;}
+    #sideBarTHide.hidden {left: -40px;}
 
 #mDiv {width: 100%; height: 100%; display: flex;}
 
@@ -116,6 +117,21 @@ background-color: rgba(var(--c4)); border-top: 1px solid white;
   #timerDiv:before { content: "Max time for recipe"; position: absolute; font-size: 0.6em; top: 25px; left: 2px; }
 #addRecipeBtn {background-color: white; cursor: pointer; width: 90%; border-radius: 1em; padding: 0.5em 0.8em;}
     #addRecipeBtn:hover {cursor: pointer; background-color: rgba(var(--c1A));}
+#saveLoadDiv {display: flex; width: 90%; margin-top: 1.5em;}
+    #saveLoadDiv button {width: 50%; padding: 0.5em 0; border-radius: 1em; font-size: 1em; background-color: white; cursor: pointer;}
+        #saveLoadDiv button:hover {background-color: rgba(var(--c1A));}
+
+    #slSaveDiv {width: 350px; height: 400px; background-color: white;display: flex; flex-direction: column; margin-bottom: 5em; padding: 0.75em 0.5em 0.25em;}
+        #slSaveDiv p {font-size: 1rem;}
+        #slSaveDiv textarea {width: 100%; height: 100%; border: none; background-color: white; font-size: 0.6em; resize: none; border: 1px solid black;}
+        #slSaveDiv > div {display: flex; width: 100%; align-items: center; justify-content: end;}
+            #slSaveDiv > div span {padding: 0.2em;}
+            #slSaveDiv > div span:after {position: absolute; top: 100%; content: attr(data-data); opacity: 0; margin-top: 0.75em;}
+                #slSaveDiv > div span:hover:after {opacity: 1; font-family: "Noto Sans"; color: black; font-size: 0.8rem;}
+    #slLoadDiv {width: 350px; height: 400px; background-color: white;display: flex; flex-direction: column; margin-bottom: 5em; padding: 0.75em 0.5em 0.25em;}
+        #slLoadDiv p {font-size: 1rem;}
+        #slLoadDiv button {padding: 0.5em; width: 100%; border-radius: 0.5em;}
+        #slLoadDiv > input {width: 100%; background-color: white; border: 1px solid black; border-radius: 0.5em; padding: 0.5em; margin-top: 1em;}
 
 
 #mainList {padding: 2.5%; width: 100%; height: 100%; overflow-y: auto;}
@@ -148,19 +164,23 @@ background-color: rgba(var(--c2));
   #oUpper {
 padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding: 10px; }
     #oTitle {font-size: 1.5em; letter-spacing: 0.2em;}
-    .oUSpan {border-radius: 10px; padding: 5px 10px; display: flex; margin-left: 20px; background-color: rgba(var(--c2C),0.5); }
-    .oUEdit {width: 1.5em; height: 1.5em; margin-left: 10px; background-color: rgba(var(--c2C),0.5); padding: 5px; border-radius: 0.25em; transition: 0.3s;}
-        .oUEdit:hover {cursor: pointer; background-color: white;}
+    .oUSpan {border-radius: 10px; padding: 5px 10px; display: flex; margin-left: 20px; background-color: rgba(255,255,255,0.9); }
+    .oUEdit.icon {width: 1.5em; height: 1.5em; margin-left: 10px; background-color: rgba(255,255,255,0.9); padding: 5px; border-radius: 0.25em; transition: 0.3s; }
+        .oUEdit.icon:hover {cursor: pointer; color: white;}
 
-  #oDown { display: flex; padding: 10px; height: 90%; background-color: rgba(var(--c1)); border-radius: 0.51em; }
+#oConfirmD {width: 300px; height: 175px; background-color: white; padding: 1em 0.5em; bottom: 20vh;}
+    #oConfirmD p {text-align: center;}
+    #oConfirmD button {width: 50%; margin: 0.2em 0.1em; border-radius: 1em; background-color: rgba(var(--c3),0.8);}
+        #oConfirmD button:hover {background-color: rgba(var(--c3)); cursor: pointer;}
+
+
+
+  #oDown { display: flex; padding: 10px; height: 90%; background-color: rgba(var(--c4B)); border-radius: 0.51em; }
     .oHeaderDiv {font-size: 1.2em; margin-bottom: 5px; border-bottom: 2px solid white; height: 50px; }
 
     #oStepsDiv {width: 60%; overflow-y: auto; padding: 10px;}
-      .stepDiv {display: flex; padding: 5px 10px; background-color: white; border-radius: 10px; margin-bottom: 10px;
-      display: flex; align-items: center;
-      }
+      .stepDiv {display: flex; display: flex; align-items: center; padding: 5px 10px; background-color: white; border-radius: 10px; margin-bottom: 10px;}
       .stepDiv:hover {cursor: pointer; background-color: rgba(var(--c4B));}
-
         .stepDivNum {padding-right: 5px; border-right: 2px solid black;}
         .stepDivText {padding-left: 10px;}
 
@@ -236,6 +256,11 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
             #ravdIcon {position: absolute; top: 0; right: 0; margin: 0.2rem; background-color: transparent; font-size: 0.8em;}
                 #ravdICon:hover {color: inherit; cursor: inherit;}
         #raISdiv {width: 100%; height: 100%; padding: 0.2em;}
+            #raImportBtn.icon {position: absolute; bottom: 0; right: 0; margin: 0.5em; color: black; z-index: 2; padding: 0.5em; border-radius: 1em;}
+                #raImportDiv {width: 35%; height: 200px; background-color: white; padding: 0.75em 0.5em; display: flex; flex-direction: column;}
+                    #raImportDiv div {font-size: 0.9rem;}
+                    #raImportDiv textarea {width: 100%; border: 2px solid black; resize: none; height: 100%;}
+
             #raIngredientListDiv {width: 100%; height: 100%; display: flex; overflow-x: auto;}
                 #raiSubBody {width: 100%; background-color: white; display: flex; overflow-x: auto;}
                 .raiColumn {width: 20vw; height: 100%; border: 2px solid black; background-color: white; border-left: none;}
@@ -250,23 +275,24 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
         #raIngredientPopup {width: 60%; height: 65%; background-color: white; border-radius: 1em; padding: 1em;}
             #raIngredientPopup .raInput input {font-size: 1.5em;}
             #raIngredientPopup .raInput span {font-size: 1em;}
-            #raIPPrev {width: 100%; height: 100px; background-color: white; margin-bottom: 5em;}
+            #raIPPrev {width: 100%; height: 100px; background-color: white;}
                 #raIPPrev .oIngrDiv {height: 100%;}
                     #raIPPrev .ingCommDiv {z-index: 2;}
             #raIngredientPopup button {width: fit-content; padding: 0.4em 0.8em; background-color: rgba(var(--c3A),0.8); border-radius: 1em; position: absolute; bottom: 30px; right: 30px; cursor: pointer; user-select: none;}
 
 
                 #raiMainBody { height: 100%; display: flex; flex-direction: column;}
-                    #raiList {background-color: white; border-left: 2px solid black;}
-                    #raiMenu {width: 100%; height: 50px; background-color: white; border: 2px solid black; display: flex; flex-direction: column; text-align: right; font-size: 1.2em; align-items: right; justify-content: center; padding-right: 1em;}
+                    #raiList {background-color: white; border-left: 2px solid black; white-space: pre-wrap;}
+                        #raiList:empty:after {content: "Empty Recipe List. \A\A(Hover over the \"+\" Menu to add!)"; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; bottom: 20vh; font-size: 0.9rem; text-align: center;}
+                    #raiMenu {width: 100%; height: 50px; background-color: rgba(var(--c1,0.8)); border: 2px solid black; display: flex; flex-direction: column; text-align: right; font-size: 1.2em; align-items: right; justify-content: center; padding-right: 1em;}
                         #raiMenu:hover {cursor: pointer;}
                         #raiMenu:hover #raimPopup {max-height: 300px; border-bottom-color: black;}
-                        #raimPopup {width: 100%; position: absolute; bottom: 100%; overflow: hidden; max-height: 0; border-bottom: 2px solid white; background-color: white;}
+                        #raimPopup {width: 100%; position: absolute; bottom: 100%; overflow: hidden; max-height: 0; border-bottom: 2px solid rgba(var(--c1)); background-color: rgba(var(--c1));}
                         .raimOp {width: 100%; display: flex; background-color: white; padding: 0.5em;}
                             .raimOp:hover {background-color: rgba(var(--c3A),0.8); cursor: pointer;}
                             .raimOp .icon {background-color: transparent; margin-right: 0.5em; }
             #raStepsListDiv {width: 100%; height: 100%; display: flex; flex-direction: column; overflow: auto; align-items: center;}
-                #raslContainer {max-height: 80%; width: 100%; overflow-y: scroll;}
+                #raslContainer {max-height: 60vh; width: 100%; overflow-y: scroll;}
                 .raslStepD {width: 100%; height: 100px; border-bottom: 1px solid black; margin-bottom: 2px; display: flex; padding: 0.25em 0.1em;}
                     .raslStepD textarea {width: 100%; resize: none; font-size: 1em; padding: 0.4em 0.3em; border: none;}
                         .raslStepD textarea:focus { outline: 1px solid black;}
@@ -301,10 +327,14 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
             .ingName {font-size: 0.9em;}
         #oTitle {letter-spacing: 0em; font-size: 1em;
         }
-    #sideBarTHide {left: 0; top: 40vh; padding: 20px; background-color: white;
-    transform: rotate(-90deg);
-    }
+    #sideBarTHide {left: 0; top: calc(40vh + 40px); padding: 20px; transform: rotate(90deg);}
+        #sideBarTHide.hidden {top: 0;}
 /* RA STUFF*/
-
-
+#raRecipeInfoDiv {flex-wrap: wrap; height: 20vh;}
+    #raRecipeInfoDiv > div {margin-bottom: 20px;}
+    #raName {width: 45%;}
+    .raInput {margin: inherit;}
+    #changeRecipeBtn {position: relative; width: 30%; right: 0; font-size: 0.8em; text-align: center; padding: 0.25em 0.5em; margin-left: 1em;}
+    .raiColumn {width: 40vw;}
+    #raiSubBody {flex-wrap: wrap; flex-direction: column;}
 }
