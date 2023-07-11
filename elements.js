@@ -137,7 +137,7 @@ let slDiv = document.createElement("div"); slDiv.id = "saveLoadDiv"; p.appendChi
                             f.then(function(result) {
                                 try {
                                     let val = JSON.parse(result);
-                                    val = val.filter(x => x.name && x.cat && x.time && x.ingredients && x.steps);
+                                    val = val.filter(x => x.name && x.cat && x.ingredients && x.steps);
                                     recipes = val;
                                     createRecipes(recipes);
                                     let sb = document.getElementById("sideBar"); while (sb.childNodes.length > 0){sb.childNodes[0].remove();}
@@ -155,7 +155,7 @@ let slDiv = document.createElement("div"); slDiv.id = "saveLoadDiv"; p.appendChi
                         try {
                             let val = JSON.parse(ph.value); ph.value = "";
                                 if (Array.isArray(val) || val.length === 0){toast("Error in Uploading. Error: Is not type \"Array\" and is empty."); return}
-                            val = val.filter(x => x.name && x.cat && x.time && x.ingredients && x.steps);
+                            val = val.filter(x => x.name && x.cat && x.ingredients && x.steps);
                             recipes = val;
                                 createRecipes(recipes);
                                 let sb = document.getElementById("sideBar"); while (sb.childNodes.length > 0){sb.childNodes[0].remove();}
