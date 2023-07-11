@@ -312,7 +312,7 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
 
 
 /* MOBILE */
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 950px) {
     #mDiv {flex-direction: column;}
     #sideBar {width: 100%; max-width: 100vw; overflow-y: auto; padding-top: 10px; padding-bottom: 20px; }
     .openSB { max-height: 45vh; height: 45%;}
@@ -337,4 +337,10 @@ padding-left: 20px; font-size: 1em; display: flex; align-items: center; padding:
     #changeRecipeBtn {position: relative; width: 30%; right: 0; font-size: 0.8em; text-align: center; padding: 0.25em 0.5em; margin-left: 1em;}
     .raiColumn {width: 40vw;}
     #raiSubBody {flex-wrap: wrap; flex-direction: column;}
+
+    #raIngredientPopup {width: 90%;}
+    #raIngredientPopup input {font-size: 1rem !important;}
+        #raIngredientPopup span {font-size: 0.7rem !important;}
+    #raImportDiv {width: 95%; height: 45%;}
+        #raImportDiv textarea {margin-top: 1em;}
 }
